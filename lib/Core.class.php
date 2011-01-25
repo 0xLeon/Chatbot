@@ -16,6 +16,7 @@ class Core {
 		foreach ($modules as $module) {
 			self::loadModule($module);
 		}
+		self::bot()->work();
 	}
 	
 	protected static function init() {
