@@ -5,6 +5,7 @@ class Bot {
 	protected $id = 0;
 	protected $queue = array();
 	protected $child = 0;
+	protected $needRefork = false;
 	public function __construct() {
 		$this->connection = new Connection(SERVER, ID, null, null, HASH);
 		$this->connection->getSecurityToken();
@@ -23,17 +24,23 @@ class Bot {
 				exit;
 			case SIGCHLD:
 				pcntl_waitpid(-1, $status);
-				$this->child = pcntl_fork();	
-				if ($this->child === -1) {
-					Core::log()->error = 'Fatal: Could not fork, exiting';
-					exit(1);
-				}					
-				else if ($this->child === 0) {
-					return self::child();
-				}
-				Core::log()->error = 'Child died, reforking, child is: '.$this->child;
+				Core::log()->error = 'Child died, reforking';
+				$this->needRefork = true;
+				return;
 			default:
 			     // handle all other signals
+		}
+	}
+	
+	public function isParent() {
+		return ($this->child > 0);
+	}
+	
+	public function fork() {
+		$this->child = pcntl_fork();	
+		if ($this->child === -1) {
+			Core::log()->error = 'Fatal: Could not fork, exiting';
+			exit(1);
 		}
 	}
 	
@@ -41,23 +48,24 @@ class Bot {
 		Core::log()->info = 'Initializing finished, forking';
 		pcntl_signal(SIGTERM, array($this, 'signalHandler'));
 		pcntl_signal(SIGCHLD, array($this, 'signalHandler'));
+		register_shutdown_function(array('Core', 'destruct'));
 		
-		$this->child = pcntl_fork();
-		if ($this->child === -1) {
-			Core::log()->error = 'Fatal: Could not fork, exiting';
-			exit(1);
-		}
-		else if ($this->child === 0) {
-			// child process
-			return self::child();
-		}
-		else {
-			register_shutdown_function(array('Core', 'destruct'));
-			Core::log()->info = 'Child is: '.$this->child;
-			// parent
-			while (true) {
-				sleep(1);
+		$this->needRefork = true;
+		// parent
+		while (true) {
+			if ($this->needRefork) {
+				$this->fork();
+				$this->needRefork = false;
+				
+				if ($this->child === 0) {
+					// child process
+					return self::child();
+				}
+				else {
+					Core::log()->info = 'Child is: '.$this->child;
+				}
 			}
+			sleep(1);
 		}
 	}
 	

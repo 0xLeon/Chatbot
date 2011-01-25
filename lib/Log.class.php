@@ -2,6 +2,7 @@
 class Log {
 	
 	public function log($log, $what) {
+	echo	"[".date('d.m.Y H:i:s')."] ".$log.": ".$what."\n";
 		$data = '';
 		if (file_exists(DIR.'log/'.$log)) {
 			$data = file_get_contents(DIR.'log/'.$log);

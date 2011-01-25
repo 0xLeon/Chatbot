@@ -221,6 +221,6 @@ class Connection {
 
 	public function leave() {
 		$this->url['query'] = 'form=Chat&kill=1';
-		echo $this->setRequest();
+		$this->setRequest();
 	}
 }

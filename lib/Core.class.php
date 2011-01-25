@@ -26,6 +26,9 @@ class Core {
 	}
 	
 	public static function destruct() {
+		if (self::$bot !== null) {
+			if (!self::$bot->isParent()) return;
+		}
 		self::$bot->getConnection()->leave();
 		self::$log->info = 'Shutting down, clearing cache';
 		$files = glob(DIR.'cache/*.class.php');
