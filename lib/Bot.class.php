@@ -19,6 +19,7 @@ class Bot {
 			case SIGTERM:
 				// handle shutdown tasks
 				if ($this->child !== 0) {
+					Core::log()->error = 'Received SIGTERM';
 					posix_kill($this->child, SIGTERM); 
 				}
 				exit;

@@ -9,10 +9,13 @@ class Core {
 	private function __construct() {
 		self::init();
 		self::$log = new Log();
+		self::log()->info = 'Starting, PID is '.getmypid();
 		self::$config = new Config();
+		self::log()->info = 'Loaded Config';
 		self::$bot = new Bot();
 		
 		$modules = self::config()->config['modules'];
+		self::log()->info = 'Loading Modules';
 		foreach ($modules as $module) {
 			self::loadModule($module);
 		}
@@ -35,6 +38,7 @@ class Core {
 		foreach ($files as $file) {
 			unlink($file);
 		}
+		unlink(DIR.'config/bot.pid');
 	}
 	
 	public static function isOp($userID) {
