@@ -4,52 +4,12 @@ class Bot {
 	protected $connection = null;
 	protected $id = 0;
 	protected $queue = array();
-	protected $child = 0;
 	public function __construct() {
 		$this->connection = new Connection(SERVER, ID, null, null, HASH);
 		$this->connection->getSecurityToken();
 		preg_match("/new Chat\(([0-9]+), ([0-9]), '(.*?)'\)/", $this->connection->joinChat(), $matches);
 		$this->id = $matches[1];
 		Core::log()->info = 'Successfully connected to server, reading messages from: '.$this->id;
-	}
-	
-	public function work() {
-		Core::log()->info = 'Initializing finished, forking';
-		/*$this->child = pcntl_fork();
-		if ($this->child === -1) {
-			Core::log()->error = 'Fatal: Could not fork, exiting';
-			exit 1;
-		}
-		else if ($this->child === 0) {
-			// child process
-			return self::child();
-		}
-		else {
-			Core::log()->info = 'Child is: '.$this->child;
-			// parent
-			while (true) {
-				pcntl_wait($status, WNOHANG);
-				if ($status !== 0) {
-					$this->child = pcntl_fork();	
-					if ($this->child === -1) {
-						Core::log()->error = 'Fatal: Could not fork, exiting';
-						exit 1;
-					}					
-					else if ($this->child === 0) {
-						return self::child();
-					}
-					Core::log()->error = 'Child died, reforking, child is: '.$this->child;
-				}
-			}
-		}*/
-	}
-	
-	public function child() {
-		while (true) {
-			self::loadQueue();
-			self::getConnection->postMessage(array_shift(self::$queue));
-			usleep(500000);
-		}
 	}
 	
 	public function getConnection() {
@@ -65,7 +25,7 @@ class Bot {
 		return $data;
 	}
 	
-	public function loadQueue() {
+	public function send() {
 		if (file_exists('say')) {
 			$data = explode("\n", file_get_contents(DIR.'say'));
 			unlink(DIR.'say');

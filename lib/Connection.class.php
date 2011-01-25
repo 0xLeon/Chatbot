@@ -130,8 +130,6 @@ class Connection {
 			}
 			$request = substr($request,0,-1);
 		}
-		echo "POST ".$this->url['path'].((!empty($this->url['query'])) ? '?'.$this->url['query'] : '')." HTTP/1.1\r\n";
-		print_r($this);
 		fputs($fp, "POST ".$this->url['path'].((!empty($this->url['query'])) ? '?'.$this->url['query'] : '')." HTTP/1.1\r\n");
 		fputs($fp, "Host: ".$this->url['host']."\r\n");
 		fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n");
@@ -223,6 +221,6 @@ class Connection {
 
 	public function leave() {
 		$this->url['query'] = 'form=Chat&kill=1';
-		$this->setRequest();
+		echo $this->setRequest();
 	}
 }
