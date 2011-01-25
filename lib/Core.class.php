@@ -48,7 +48,7 @@ class Core {
 		self::config()->config['modules'][$module] = $module;
 		self::config()->write();
 		
-		self::$log->info = 'Loaded module '.$module.' @ '.$address;
+		self::log()->info = 'Loaded module '.$module.' @ '.$address;
 		return $address;
 	}
 	
@@ -60,7 +60,7 @@ class Core {
 		unset(self::config()->config['modules'][$module]);
 		self::config()->write();
 		
-		self::$log->info = 'Unloaded module '.$module.' @ '.$address;
+		self::log()->info = 'Unloaded module '.$module.' @ '.$address;
 		return $address;
 	}
 	
@@ -80,7 +80,7 @@ class Core {
 			return self::$$name;
 		}
 		else {
-			self::$log->error = 'Tried to access unknown member '.$name.' in Core';
+			self::log()->error = 'Tried to access unknown member '.$name.' in Core';
 		}
 	}
 	
