@@ -113,7 +113,7 @@ class Connection {
 	protected function setRequest() {
 		$fp = fsockopen($this->url['host'],((isset($this->url['port'])) ? $this->url['port'] : 80),$errno,$errstr,30);
 		if (!$fp) {
-			throw new Exception('Connection could not be established');
+			return;
 		}
 
 		$request = '';

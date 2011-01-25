@@ -17,13 +17,21 @@ class Bot {
 		switch ($signo) {
 			case SIGTERM:
 				// handle shutdown tasks
+				if ($this->child !== 0) {
+					posix_kill($this->child, SIGTERM); 
+				}
 				exit;
-			 case SIGHUP:
-				// handle restart tasks
-			break;
-			case SIGUSR1:
-				echo "Caught SIGUSR1...\n";
-			break;
+			case SIGCHLD:
+				pcntl_waitpid(-1, $status);
+				$this->child = pcntl_fork();	
+				if ($this->child === -1) {
+					Core::log()->error = 'Fatal: Could not fork, exiting';
+					exit(1);
+				}					
+				else if ($this->child === 0) {
+					return self::child();
+				}
+				Core::log()->error = 'Child died, reforking, child is: '.$this->child;
 			default:
 			     // handle all other signals
 		}
@@ -31,6 +39,9 @@ class Bot {
 	
 	public function work() {
 		Core::log()->info = 'Initializing finished, forking';
+		pcntl_signal(SIGTERM, array($this, 'signalHandler'));
+		pcntl_signal(SIGCHLD, array($this, 'signalHandler'));
+		
 		$this->child = pcntl_fork();
 		if ($this->child === -1) {
 			Core::log()->error = 'Fatal: Could not fork, exiting';
@@ -41,23 +52,11 @@ class Bot {
 			return self::child();
 		}
 		else {
+			register_shutdown_function(array('Core', 'destruct'));
 			Core::log()->info = 'Child is: '.$this->child;
-			pcntl_signal(SIGTERM, array($this, 'signalHandler'));
 			// parent
 			while (true) {
-				$status = 0;
-				pcntl_wait($status, WNOHANG);
-				if ($status !== 0) {
-					$this->child = pcntl_fork();	
-					if ($this->child === -1) {
-						Core::log()->error = 'Fatal: Could not fork, exiting';
-						exit(1);
-					}					
-					else if ($this->child === 0) {
-						return self::child();
-					}
-					Core::log()->error = 'Child died, reforking, child is: '.$this->child;
-				}
+				sleep(1);
 			}
 		}
 	}
@@ -65,7 +64,9 @@ class Bot {
 	public function child() {
 		while (true) {
 			self::loadQueue();
-			self::getConnection()->postMessage(array_shift($this->queue));
+			if (count($this->queue)) {
+				self::getConnection()->postMessage(array_shift($this->queue));
+			}
 			usleep(500000);
 		}
 	}
@@ -76,6 +77,7 @@ class Bot {
 	
 	public function read() {
 		$data = self::$api->readMessages(self::$id);
+		
 		if (count($data['messages'])) {
 			$id = end($data['messages']);
 			$this->$id = $id['id'];
