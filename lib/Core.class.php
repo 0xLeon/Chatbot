@@ -7,6 +7,7 @@ class Core {
 	private static $bot = null;
 	private static $modules = array();
 	private function __construct() {
+		self::init();
 		self::$log = new Log();
 		self::$config = new Config();
 		self::$bot = new Bot();
@@ -15,6 +16,12 @@ class Core {
 		foreach ($modules as $module) {
 			self::loadModule($module);
 		}
+	}
+	
+	protected static function init() {
+		if (!file_exists(DIR.'log/')) mkdir(DIR.'log/', 0777);
+		if (!file_exists(DIR.'cache/')) mkdir(DIR.'cache/', 0777);
+		if (!file_exists(DIR.'config/')) mkdir(DIR.'config/', 0777);
 	}
 	
 	public static function destruct() {
