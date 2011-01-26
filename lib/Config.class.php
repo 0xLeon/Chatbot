@@ -11,7 +11,7 @@ class Config {
 		),
 		'stfu' => false
 	)) {
-		$this->type = 'main';
+		$this->type = $type;
 		$this->load($standard);
 		$this->write();
 	}
