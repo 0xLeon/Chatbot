@@ -79,6 +79,22 @@ class Bot {
 						Core::log()->permission = $this->message['usernameraw'].' tried to load a module';
 					}
 				}
+				else if (substr(Module::removeWhisper($this->message['text']), 0, 7) == '!unload') {
+					if (Core::isOp($this->lookUpUserID())) {
+						Core::unloadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 7)));
+					}
+					else {
+						Core::log()->permission = $this->message['usernameraw'].' tried to unload a module';
+					}
+				}
+				else if (substr(Module::removeWhisper($this->message['text']), 0, 7) == '!reload') {
+					if (Core::isOp($this->lookUpUserID())) {
+						Core::reloadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 7)));
+					}
+					else {
+						Core::log()->permission = $this->message['usernameraw'].' tried to reload a module';
+					}
+				}
 			}
 			sleep(1);
 		}
