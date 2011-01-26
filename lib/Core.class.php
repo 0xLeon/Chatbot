@@ -56,6 +56,10 @@ class Core {
 		
 		require_once(DIR.'cache/'.$address.'.class.php');
 		self::$modules[$module] = new $address();
+		if (!self::$modules[$module] instanceof Module) {
+			self::log()->error = 'Tried to load Module '.$module.' but it is no module, unloading';
+			return self::unloadModule($module);
+		}
 		
 		self::config()->config['modules'][$module] = $module;
 		self::config()->write();

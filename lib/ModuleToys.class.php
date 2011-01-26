@@ -1,4 +1,4 @@
 <?php
-class ModuleToys {
+class ModuleToys extends Module {
 
 }
