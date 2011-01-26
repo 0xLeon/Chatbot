@@ -7,7 +7,7 @@ class Config {
 		
 		),
 		'op' => array(
-			ID
+			ID => ID
 		),
 		'stfu' => false
 	)) {
@@ -17,7 +17,10 @@ class Config {
 	}
 	
 	public function load($standard) {
-		if (!file_exists(DIR.'config/'.$this->type)) return;
+		if (!file_exists(DIR.'config/'.$this->type)) {
+			$this->config = $standard;
+			return;
+		}
 		$data = unserialize(file_get_contents(DIR.'config/'.$this->type));
 		$this->config = self::array_extend($standard, $data);
 	}

@@ -110,7 +110,7 @@ class Connection {
 	 *
 	 * @return	string		Request Answer
 	 */
-	protected function setRequest() {
+	protected function setRequest($wait = true) {
 		$fp = fsockopen($this->url['host'],((isset($this->url['port'])) ? $this->url['port'] : 80),$errno,$errstr,30);
 		if (!$fp) {
 			return;
@@ -140,8 +140,10 @@ class Connection {
 		fputs($fp, $request."\r\n\r\n");
 
 		$result = '';
-		while (!feof($fp)) {
-			$result .= fgets($fp);
+		if ($wait) {
+			while (!feof($fp)) {
+				$result .= fgets($fp);
+			}
 		}
 		fclose($fp);
 
@@ -195,7 +197,7 @@ class Connection {
 			'enablesmilies' => 1,
 			'ajax' => 1
 		);
-		$this->setRequest();
+		$this->setRequest(false);
 	}
 	
 	public function readMessages($id) {
@@ -209,7 +211,7 @@ class Connection {
 	
 	public function join($roomID) {
 		$this->url['query'] = 'page=Chat&ajax=1&room='.$roomID;
-		$data = $this->setRequest();
+		$data = $this->setRequest(false);
 		return $data;
 	}
 	
@@ -221,6 +223,6 @@ class Connection {
 
 	public function leave() {
 		$this->url['query'] = 'form=Chat&kill=1';
-		$this->setRequest();
+		$this->setRequest(false);
 	}
 }

@@ -11,7 +11,7 @@ class Bot {
 	public function __construct() {
 		$this->connection = new Connection(SERVER, ID, null, null, HASH);
 		$this->connection->getSecurityToken();
-		preg_match("/new Chat\(([0-9]+), ([0-9]), '(.*?)'\)/", $this->connection->joinChat(), $matches);
+		preg_match("/new Chat\(([0-9]+)/", $this->connection->joinChat(), $matches);
 		$this->id = $matches[1];
 		Core::log()->info = 'Successfully connected to server, reading messages from: '.$this->id;
 	}
@@ -98,6 +98,40 @@ class Bot {
 						Core::log()->permission = $this->message['usernameraw'].' tried to reload a module';
 					}
 				}
+				else if (substr(Module::removeWhisper($this->message['text']), 0, 3) == '!op') {
+					$user = trim(substr(Module::removeWhisper($this->message['text']), 4));
+					if (Core::isOp($this->lookUpUserID())) {
+						$userID = $this->lookUpUserID($user);
+						if ($userID) {
+							Core::log()->info = $this->message['usernameraw'].' opped '.$user;
+							Core::config()->config['op'][$userID] = $userID;
+							Core::config()->write();
+						}
+						else {
+							$this->queue('/whisper "'.$this->message['usernameraw'].'" Konnte den Benutzer '.$user.' nicht finden, ist er online?');
+						}
+					}
+					else {
+						Core::log()->permission = $this->message['usernameraw'].' tried to op '.$user;
+					}
+				}
+				else if (substr(Module::removeWhisper($this->message['text']), 0, 5) == '!deop') {
+					$user = trim(substr(Module::removeWhisper($this->message['text']), 6));
+					if (Core::isOp($this->lookUpUserID())) {
+						$userID = $this->lookUpUserID($user);
+						if ($userID) {
+							Core::log()->info = $this->message['usernameraw'].' deopped '.$user;
+							unset(Core::config()->config['op'][$userID]);
+							Core::config()->write();
+						}
+						else {
+							$this->queue('/whisper "'.$this->message['usernameraw'].'" Konnte den Benutzer '.$user.' nicht finden, ist er online?');
+						}
+					}
+					else {
+						Core::log()->permission = $this->message['usernameraw'].' tried to deop '.$user;
+					}
+				}
 				else {
 					$modules = Core::getModules();
 					foreach ($modules as $module) {
@@ -109,9 +143,10 @@ class Bot {
 		}
 	}
 	
-	public function lookUpUserID() {
+	public function lookUpUserID($username = null) {
+		if ($username === null) $username = $this->message['usernameraw'];
 		foreach ($this->data['users'] as $user) {
-			if ($user['usernameraw'] == $this->message['usernameraw']) return $user['userID'];
+			if ($user['usernameraw'] == $username) return $user['userID'];
 		}
 		return 0;
 	}

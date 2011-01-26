@@ -32,25 +32,32 @@ class Core {
 		if (self::$bot !== null) {
 			if (!self::$bot->isParent()) return;
 		}
+		self::$log->info = 'Shutting down';
 		self::$bot->getConnection()->leave();
-		self::$log->info = 'Shutting down, clearing cache';
+		self::$log->info = 'Left chat';
+		self::$config->write();
+		self::$log->info = 'Written config';
+		
+		foreach (self::$modules as $module) {
+			$module->destruct();
+		}
+		self::$log->info = 'Unloading modules';
+		
 		$files = glob(DIR.'cache/*.class.php');
 		foreach ($files as $file) {
 			unlink($file);
 		}
-		foreach (self::$modules as $module) {
-			$module->destruct();
-		}
+		self::$log->info = 'Cleaned cache';
 		unlink(DIR.'config/bot.pid');
 	}
 	
 	public static function isOp($userID) {
-		return in_array($userID, self::config()->config['op']);
+		return isset(self::config()->config['op'][$userID]);
 	}
 	
 	public static function loadModule($module) {
 		if (isset(self::$modules[$module])) return self::log()->error = 'Tried to load module '.$module.' that is already loaded';
-		if (!file_exists(DIR.'lib/Module'.ucfirst($module).'.class.php')) return self::log()->error = 'Tried to load Module '.$module.' but there is no matching classfile';
+		if (!file_exists(DIR.'lib/Module'.ucfirst($module).'.class.php')) return self::log()->error = 'Tried to load module '.$module.' but there is no matching classfile';
 		
 		$address = 'Module'.substr(StringUtil::getRandomID(), 0, 8);
 		$data = str_replace('class Module'.$module.' ',  "// Module is: ".$module."\nclass ".$address.' ', file_get_contents(DIR.'lib/Module'.ucfirst($module).'.class.php'));
