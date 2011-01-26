@@ -73,6 +73,7 @@ class Bot {
 			foreach($this->data['messages'] as $this->message) {
 				if (substr(Module::removeWhisper($this->message['text']), 0, 5) == '!load') {
 					if (Core::isOp($this->lookUpUserID())) {
+						Core::log()->info = $this->message['usernameraw'].' loaded a module';
 						Core::loadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 5)));
 					}
 					else {
@@ -81,6 +82,7 @@ class Bot {
 				}
 				else if (substr(Module::removeWhisper($this->message['text']), 0, 7) == '!unload') {
 					if (Core::isOp($this->lookUpUserID())) {
+						Core::log()->info = $this->message['usernameraw'].' unloaded a module';
 						Core::unloadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 7)));
 					}
 					else {
@@ -89,14 +91,21 @@ class Bot {
 				}
 				else if (substr(Module::removeWhisper($this->message['text']), 0, 7) == '!reload') {
 					if (Core::isOp($this->lookUpUserID())) {
+						Core::log()->info = $this->message['usernameraw'].' reloaded a module';
 						Core::reloadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 7)));
 					}
 					else {
 						Core::log()->permission = $this->message['usernameraw'].' tried to reload a module';
 					}
 				}
+				else {
+					$modules = Core::getModules();
+					foreach ($modules as $module) {
+						$module->handle($this);
+					}
+				}
 			}
-			sleep(1);
+			usleep(250000);
 		}
 	}
 	
@@ -113,7 +122,7 @@ class Bot {
 			if (count($this->queue)) {
 				self::getConnection()->postMessage(array_shift($this->queue));
 			}
-			usleep(500000);
+			usleep(250000);
 		}
 	}
 	

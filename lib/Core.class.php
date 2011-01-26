@@ -94,6 +94,10 @@ class Core {
 		return isset(self::$modules[$module]);
 	}
 	
+	public static function getModules() {
+		return self::$modules;
+	}
+	
 	public final static function get() {
 		if (self::$instance === null) {
 			self::$instance = new self();
