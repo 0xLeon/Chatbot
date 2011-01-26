@@ -38,6 +38,9 @@ class Core {
 		foreach ($files as $file) {
 			unlink($file);
 		}
+		foreach (self::$modules as $module) {
+			$module->destruct();
+		}
 		unlink(DIR.'config/bot.pid');
 	}
 	
@@ -46,6 +49,7 @@ class Core {
 	}
 	
 	public static function loadModule($module) {
+		if (isset(self::$modules[$module])) return self::log()->error = 'Tried to load module '.$module.' that is already loaded';
 		$address = 'Module'.substr(StringUtil::getRandomID(), 0, 8);
 		$data = str_replace('class Module'.$module.' {', 'class '.$address." {\n// Module is: ".$module, file_get_contents(DIR.'lib/Module'.ucfirst($module).'.class.php'));
 		file_put_contents(DIR.'cache/'.$address.'.class.php', $data);
@@ -61,8 +65,11 @@ class Core {
 	}
 	
 	public static function unloadModule($module) {
+		if (!isset(self::$modules[$module])) return self::log()->error = 'Tried to unload module '.$module.' that is not loaded';
 		$address = get_class(self::$modules[$module]);
 		unlink(DIR.'cache/'.$address.'.class.php');
+		
+		self::$modules[$module]->destruct();
 		
 		unset(self::$modules[$module]);
 		unset(self::config()->config['modules'][$module]);
@@ -70,6 +77,15 @@ class Core {
 		
 		self::log()->info = 'Unloaded module '.$module.' @ '.$address;
 		return $address;
+	}
+	
+	public static function reloadModule($module) {
+		self::unloadModule($module);
+		self::loadModule($module);
+	}
+	
+	public static function moduleLoaded($module) {
+		return isset(self::$modules[$module]);
 	}
 	
 	public final static function get() {
