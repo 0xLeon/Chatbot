@@ -50,6 +50,7 @@ class Core {
 	
 	public static function loadModule($module) {
 		if (isset(self::$modules[$module])) return self::log()->error = 'Tried to load module '.$module.' that is already loaded';
+		if (!file_exists(DIR.'lib/Module'.ucfirst($module).'.class.php')) return self::log()->error = 'Tried to load Module '.$module.' but there is no matching classfile';
 		$address = 'Module'.substr(StringUtil::getRandomID(), 0, 8);
 		$data = str_replace('class Module'.$module.' {', 'class '.$address." {\n// Module is: ".$module, file_get_contents(DIR.'lib/Module'.ucfirst($module).'.class.php'));
 		file_put_contents(DIR.'cache/'.$address.'.class.php', $data);

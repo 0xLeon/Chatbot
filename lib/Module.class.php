@@ -2,7 +2,7 @@
 
 abstract class Module {
 	abstract public function destruct();
-	public function removeWhisper($message) {
+	public static function removeWhisper($message) {
 	
 		return str_replace('flüstert an '.NAME.': ', '', $message);
 	}

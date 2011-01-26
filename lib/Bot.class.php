@@ -6,6 +6,8 @@ class Bot {
 	protected $queue = array();
 	protected $child = 0;
 	protected $needRefork = false;
+	public $data = array();
+	public $message = array();
 	public function __construct() {
 		$this->connection = new Connection(SERVER, ID, null, null, HASH);
 		$this->connection->getSecurityToken();
@@ -67,10 +69,26 @@ class Bot {
 				}
 			}
 			// read messages
-			$data = Bot::read();
-			print_r($data);
+			$this->data = Bot::read();
+			foreach($this->data['messages'] as $this->message) {
+				if (substr(Module::removeWhisper($this->message['text']), 0, 5) == '!load') {
+					if (Core::isOp($this->lookUpUserID())) {
+						Core::loadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 5)));
+					}
+					else {
+						Core::log()->permission = $this->message['usernameraw'].' tried to load a module';
+					}
+				}
+			}
 			sleep(1);
 		}
+	}
+	
+	public function lookUpUserID() {
+		foreach ($this->data['users'] as $user) {
+			if ($user['usernameraw'] == $this->message['usernameraw']) return $user['userID'];
+		}
+		return 0;
 	}
 	
 	public function child() {
