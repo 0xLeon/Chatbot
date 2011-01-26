@@ -66,6 +66,9 @@ class Bot {
 					Core::log()->info = 'Child is: '.$this->child;
 				}
 			}
+			// read messages
+			$data = Bot::read();
+			print_r($data);
 			sleep(1);
 		}
 	}
@@ -85,11 +88,11 @@ class Bot {
 	}
 	
 	public function read() {
-		$data = self::$api->readMessages(self::$id);
+		$data = $this->getConnection()->readMessages($this->id);
 		
 		if (count($data['messages'])) {
 			$id = end($data['messages']);
-			$this->$id = $id['id'];
+			$this->id = $id['id'];
 		}
 		return $data;
 	}
@@ -106,6 +109,7 @@ class Bot {
 	
 	public function queue($message) {
 		if (Core::config()->config['stfu']) return;
+		
 		$data = '';
 		if (file_exists(DIR.'say')) {
 			$data = file_get_contents(DIR.'say')."\n";
