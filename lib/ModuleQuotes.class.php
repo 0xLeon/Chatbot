@@ -20,11 +20,13 @@ class ModuleQuotes extends Module {
 		}
 		else if (substr($bot->message['text'], 0,9) == '!setquote') {
 			$this->config->config[$bot->lookUpUserID()] = substr($bot->message['text'], 10);
-			$bot->queue('['.$bot->message['usernameraw'].'] Deine Join-Nachricht wurde auf: "'.substr($bot->message['text'], 10).'" gesetzt');
+	//		$bot->queue('['.$bot->message['usernameraw'].'] Deine Join-Nachricht wurde auf: "'.substr($bot->message['text'], 10).'" gesetzt');
+			$bot->success();
 		}
 		else if ($bot->message['text'] == '!delquote') {
 			unset($this->config->config[$bot->lookUpUserID()]);
-			$bot->queue('['.$bot->message['usernameraw'].'] deine Join-Nachricht wurde gelöscht');
+	//		$bot->queue('['.$bot->message['usernameraw'].'] deine Join-Nachricht wurde gelöscht');
+			$bot->success();
 		}
 	/*	else if (substr($bot->message['text'], 0, strlen('flüstert an '.$bot->$own.': !wipequote')) == 'flüstert an '.$bot->$own.': !wipequote' && in_array($bot->message['usernameraw'], $bot->$mod)) {
 			$username = substr($bot->message['text'], strlen('flüstert an '.$bot->$own.': !wipequote')+1);

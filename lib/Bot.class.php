@@ -75,6 +75,7 @@ class Bot {
 					if (Core::isOp($this->lookUpUserID())) {
 						Core::log()->info = $this->message['usernameraw'].' loaded a module';
 						Core::loadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 5)));
+						$this->success();
 					}
 					else {
 						Core::log()->permission = $this->message['usernameraw'].' tried to load a module';
@@ -84,6 +85,7 @@ class Bot {
 					if (Core::isOp($this->lookUpUserID())) {
 						Core::log()->info = $this->message['usernameraw'].' unloaded a module';
 						Core::unloadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 7)));
+						$this->success();
 					}
 					else {
 						Core::log()->permission = $this->message['usernameraw'].' tried to unload a module';
@@ -93,6 +95,7 @@ class Bot {
 					if (Core::isOp($this->lookUpUserID())) {
 						Core::log()->info = $this->message['usernameraw'].' reloaded a module';
 						Core::reloadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 7)));
+						$this->success();
 					}
 					else {
 						Core::log()->permission = $this->message['usernameraw'].' tried to reload a module';
@@ -106,6 +109,7 @@ class Bot {
 							Core::log()->info = $this->message['usernameraw'].' opped '.$user;
 							Core::config()->config['op'][$userID] = $userID;
 							Core::config()->write();
+							$this->success();
 						}
 						else {
 							$this->queue('/whisper "'.$this->message['usernameraw'].'" Konnte den Benutzer '.$user.' nicht finden, ist er online?');
@@ -123,6 +127,7 @@ class Bot {
 							Core::log()->info = $this->message['usernameraw'].' deopped '.$user;
 							unset(Core::config()->config['op'][$userID]);
 							Core::config()->write();
+							$this->success();
 						}
 						else {
 							$this->queue('/whisper "'.$this->message['usernameraw'].'" Konnte den Benutzer '.$user.' nicht finden, ist er online?');
@@ -144,6 +149,7 @@ class Bot {
 	}
 	
 	public function lookUpUserID($username = null) {
+		//  TODO: Lookup users that are not online
 		if ($username === null) $username = $this->message['usernameraw'];
 		foreach ($this->data['users'] as $user) {
 			if ($user['usernameraw'] == $username) return $user['userID'];
@@ -183,6 +189,10 @@ class Bot {
 				if (!empty($d)) $this->queue[] = $d;
 			}
 		}
+	}
+	
+	public function success() {
+		$this->queue('/whisper "'.$this->message['usernameraw'].'" Der Befehl wurde erfolgreich ausgeführt');
 	}
 	
 	public function queue($message) {
