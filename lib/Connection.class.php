@@ -225,4 +225,12 @@ class Connection {
 		$this->url['query'] = 'form=Chat&kill=1';
 		$this->setRequest(false);
 	}
+	
+	public function lookUp($username) {
+		$this->url['query'] = 'page=User&username='.rawurlencode($username);
+		$data = $this->setRequest();
+		if (preg_match('~Location: (.*)~', $result, $matches)) {
+			// $matches[1] is the new url
+		}
+	}
 }
