@@ -149,12 +149,12 @@ class Bot {
 	}
 	
 	public function lookUpUserID($username = null) {
-		//  TODO: Lookup users that are not online
+		//  First lookup online users (faster)
 		if ($username === null) $username = $this->message['usernameraw'];
 		foreach ($this->data['users'] as $user) {
 			if ($user['usernameraw'] == $username) return $user['userID'];
 		}
-		return 0;
+		return $this->getConnection()->lookUp($username);
 	}
 	
 	public function child() {

@@ -28,10 +28,14 @@ class ModuleQuotes extends Module {
 	//		$bot->queue('['.$bot->message['usernameraw'].'] deine Join-Nachricht wurde gelöscht');
 			$bot->success();
 		}
-	/*	else if (substr($bot->message['text'], 0, strlen('flüstert an '.$bot->$own.': !wipequote')) == 'flüstert an '.$bot->$own.': !wipequote' && in_array($bot->message['usernameraw'], $bot->$mod)) {
-			$username = substr($bot->message['text'], strlen('flüstert an '.$bot->$own.': !wipequote')+1);
-			unset($bot->$config['quotes'][$username]);
-			$bot->queue('/f "'.$bot->message['usernameraw'].'" Die Join-Nachricht wurde gelöscht');
-		}*/
+		else if (substr(Module::removeWhisper($bot->message['text']), 0, 10) == '!wipequote' && Core::isOp($bot->lookUpUserID())) {
+			$username = substr(Module::removeWhisper($bot->message['text']), 11);
+			$userID = $bot->lookUpUserID($username);
+			if ($userID) {
+				unset($this->config->config[$userID]);
+				$bot->success();
+			}
+			
+		}
 	}
 }
