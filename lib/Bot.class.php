@@ -192,7 +192,7 @@ class Bot {
 	}
 	
 	public function success() {
-		$this->queue('/whisper "'.$this->message['usernameraw'].'" Der Befehl wurde erfolgreich ausgeführt');
+		$this->queue('/whisper "'.$this->message['usernameraw'].'" Der Befehl wurde erfolgreich ausgefuehrt');
 	}
 	
 	public function queue($message) {

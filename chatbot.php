@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Europe/Berlin');
 declare(ticks = 1);
 define('DIR', dirname(__FILE__).'/');
 require_once(DIR.'config/userdata.php');
