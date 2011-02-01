@@ -17,7 +17,7 @@ class ModuleQuotes extends Module {
 				$bot->queue('['.$bot->message['usernameraw'].'] '.$this->config->config[$bot->lookUpUserID()]);
 			}
 		}
-		else if (substr($bot->message['text'], 0, 9) == '!setquote') {
+		else if (substr($bot->message['text'], 0, 10) == '!setquote ') {
 			$this->config->config[$bot->lookUpUserID()] = substr($bot->message['text'], 10);
 			$bot->success();
 		}
@@ -25,7 +25,7 @@ class ModuleQuotes extends Module {
 			unset($this->config->config[$bot->lookUpUserID()]);
 			$bot->success();
 		}
-		else if (substr(Module::removeWhisper($bot->message['text']), 0, 10) == '!wipequote') {
+		else if (substr(Module::removeWhisper($bot->message['text']), 0, 11) == '!wipequote ') {
 			if (Core::isOp($bot->lookUpUserID())) {
 				$username = substr(Module::removeWhisper($bot->message['text']), 11);
 				$userID = $bot->lookUpUserID($username);
