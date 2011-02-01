@@ -71,7 +71,13 @@ class Bot {
 			// read messages
 			$this->data = Bot::read();
 			foreach($this->data['messages'] as $this->message) {
-				$this->message['text'] = html_entity_decode(preg_match('~<a href="(.*)">(.*)</a>~U', "\${1}", preg_replace('~<img src="wcf/images/smilies/([^"]*).png" alt="([^"]*)" />~U', "\${2}", $this->message['text'])));
+				$this->message['text'] = html_entity_decode(
+					preg_replace('~<a href="(.*)">(.*)</a>~U', "\${1}", 
+						preg_replace('~<img src="wcf/images/smilies/([^"]*).png" alt="([^"]*)" />~U', "\${2}", 
+							$this->message['text']
+						)
+					)
+				);
 				if (substr(Module::removeWhisper($this->message['text']), 0, 6) == '!load ') {
 					if (Core::isOp($this->lookUpUserID())) {
 						Core::log()->info = $this->message['usernameraw'].' loaded a module';
