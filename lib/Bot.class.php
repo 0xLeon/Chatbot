@@ -112,7 +112,7 @@ class Bot {
 							$this->success();
 						}
 						else {
-							$this->queue('/whisper "'.$this->message['usernameraw'].'" Konnte den Benutzer '.$user.' nicht finden, ist er online?');
+							$this->queue('/whisper "'.$this->message['usernameraw'].'" Konnte den Benutzer '.$user.' nicht finden');
 						}
 					}
 					else {
@@ -130,7 +130,7 @@ class Bot {
 							$this->success();
 						}
 						else {
-							$this->queue('/whisper "'.$this->message['usernameraw'].'" Konnte den Benutzer '.$user.' nicht finden, ist er online?');
+							$this->queue('/whisper "'.$this->message['usernameraw'].'" Konnte den Benutzer '.$user.' nicht finden');
 						}
 					}
 					else {
