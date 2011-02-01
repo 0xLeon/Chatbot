@@ -18,7 +18,7 @@ class ModuleQuotes extends Module {
 				$bot->queue('['.$bot->message['usernameraw'].'] '.$this->config->config[$bot->lookUpUserID()]);
 			}
 		}
-		else if (substr($bot->message['text'], 0,9) == '!setquote') {
+		else if (substr($bot->message['text'], 0, 9) == '!setquote') {
 			$this->config->config[$bot->lookUpUserID()] = substr($bot->message['text'], 10);
 	//		$bot->queue('['.$bot->message['usernameraw'].'] Deine Join-Nachricht wurde auf: "'.substr($bot->message['text'], 10).'" gesetzt');
 			$bot->success();
