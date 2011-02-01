@@ -71,37 +71,37 @@ class Bot {
 			// read messages
 			$this->data = Bot::read();
 			foreach($this->data['messages'] as $this->message) {
-				if (substr(Module::removeWhisper($this->message['text']), 0, 5) == '!load') {
+				if (substr(Module::removeWhisper($this->message['text']), 0, 6) == '!load ') {
 					if (Core::isOp($this->lookUpUserID())) {
 						Core::log()->info = $this->message['usernameraw'].' loaded a module';
 						Core::loadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 5)));
 						$this->success();
 					}
 					else {
-						Core::log()->permission = $this->message['usernameraw'].' tried to load a module';
+						$this->denied();
 					}
 				}
-				else if (substr(Module::removeWhisper($this->message['text']), 0, 7) == '!unload') {
+				else if (substr(Module::removeWhisper($this->message['text']), 0, 8) == '!unload ') {
 					if (Core::isOp($this->lookUpUserID())) {
 						Core::log()->info = $this->message['usernameraw'].' unloaded a module';
 						Core::unloadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 7)));
 						$this->success();
 					}
 					else {
-						Core::log()->permission = $this->message['usernameraw'].' tried to unload a module';
+						$this->denied();
 					}
 				}
-				else if (substr(Module::removeWhisper($this->message['text']), 0, 7) == '!reload') {
+				else if (substr(Module::removeWhisper($this->message['text']), 0, 8) == '!reload ') {
 					if (Core::isOp($this->lookUpUserID())) {
 						Core::log()->info = $this->message['usernameraw'].' reloaded a module';
 						Core::reloadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 7)));
 						$this->success();
 					}
 					else {
-						Core::log()->permission = $this->message['usernameraw'].' tried to reload a module';
+						$this->denied();
 					}
 				}
-				else if (substr(Module::removeWhisper($this->message['text']), 0, 3) == '!op') {
+				else if (substr(Module::removeWhisper($this->message['text']), 0, 4) == '!op ') {
 					$user = trim(substr(Module::removeWhisper($this->message['text']), 4));
 					if (Core::isOp($this->lookUpUserID())) {
 						$userID = $this->lookUpUserID($user);
@@ -116,10 +116,10 @@ class Bot {
 						}
 					}
 					else {
-						Core::log()->permission = $this->message['usernameraw'].' tried to op '.$user;
+						$this->denied();
 					}
 				}
-				else if (substr(Module::removeWhisper($this->message['text']), 0, 5) == '!deop') {
+				else if (substr(Module::removeWhisper($this->message['text']), 0, 6) == '!deop ') {
 					$user = trim(substr(Module::removeWhisper($this->message['text']), 6));
 					if (Core::isOp($this->lookUpUserID())) {
 						$userID = $this->lookUpUserID($user);
@@ -134,7 +134,7 @@ class Bot {
 						}
 					}
 					else {
-						Core::log()->permission = $this->message['usernameraw'].' tried to deop '.$user;
+						$this->denied();
 					}
 				}
 				else {
@@ -192,7 +192,12 @@ class Bot {
 	}
 	
 	public function success() {
-		$this->queue('/whisper "'.$this->message['usernameraw'].'" Der Befehl wurde erfolgreich ausgefuehrt');
+		$this->queue('/whisper "'.$this->message['usernameraw'].'" Der Befehl wurde erfolgreich ausgeführt');
+	}
+	
+	public function denied() {
+		$this->queue('/whisper "'.$this->message['usernameraw'].'" Zugriff verweigert');
+		Core::log()->permission = $this->message['usernameraw'].' tried to use '.$this->message['text'];
 	}
 	
 	public function queue($message) {

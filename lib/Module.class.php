@@ -7,4 +7,7 @@ abstract class Module {
 	
 		return str_replace('flüstert an '.NAME.': ', '', $message);
 	}
+	public function __toString() {
+		return get_called_class();
+	}
 }
