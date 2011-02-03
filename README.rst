@@ -1,21 +1,55 @@
-This is a Chatbot for my Chat based on WoltLab Community Framework. It 
-was written in PHP OOP  to provide functions that are not in the 
-Chat-Core. The Bot is modular and you can easiely reload Modules on the 
-fly without restarting the bot.
+===========
+Chatbot 2.0
+===========
 
-The Bot has to be run on the Commandline-Interpreter (CLI) of PHP::
+A Chatbot written in PHP for my Chat based on WoltLab Community Framework.
 
-    php chatbot.php
+This Chatbot provides functions, that are not included in the Chat-Core. It 
+accesses the Chat by HTTP-Requests. The Bot is modular and easy to extend.
 
-It is forking itself after booting and exists from that time as two 
-PHP-Processes. 
+Features
+========
 
-After the first Boot you should grant yourself Operator-Rights (OP) by 
-creating a file "say" with the contents::
+* Full PHP 5-OOP
+* Modular
+* On-The-Fly loading, unloading and reloading modules
+* High Performance 
 
-    !op YourUsername
+Usage
+=====
 
-in the Directory with the chatbot.php. This file is read by the Bot and 
-deleted afterwards. The Bot will now give you OP. The rest can be 
-configured by commands right in the Chat.
+First start
+-----------
 
+Before the first start you have to prepare the bot a bit. You have to tell it
+which login-data it should use by creating a config-directory in the directory
+where the chatbot.php is. In the config-directory create a file namend 
+userdata.php with the following contents::
+
+    <?php
+	define('SERVER', 'http://your-server.com/forum/index.php'); // Path to the index.php of the board
+	define('ID', 2); // UserID of the bot-user
+	define('NAME', 'Chatbot'); // Username of the bot-user
+	define('HASH', '7421afc131519d342cd7ab097acfb20ef0143693'); // the login cookie of the bot
+	?>
+	
+After that you can run the bot on the Commandline-Interpreter (CLI) of PHP by
+the following command::
+    
+	php chatbot.php
+	
+The bot will create needed directories and forks itself afterwards. From that
+time there will always be two processes. After that you will have to grant
+yourself Operator privilegies (OP). You can do it by creating a file called say
+in the directory of the chatbot.php. The say-file must have the following
+content::
+    
+	!op YourUsername
+	
+The bot will post that message in the Chat and afterwards grants you OP. The
+say-file will be deleted after posting. From now on you can configure it fully
+via special commands.
+
+
+Best regards,
+		Tim
