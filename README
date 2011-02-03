@@ -4,13 +4,13 @@ Chat-Core. The Bot is modular and you can easiely reload Modules on the
 fly without restarting the bot.
 
 The Bot has to be run on the Commandline-Interpreter (CLI) of PHP:
-<code>php chatbot.php</code>
+`php chatbot.php`
 
 It is forking itself after booting and exists from that time as two 
 PHP-Processes. 
 
-After the first Boot you should give yourself Operator-Rights (OP) by 
-creating a file "say" with the contents: <code>!op YourUsername</code> 
+After the first Boot you should grant yourself Operator-Rights (OP) by 
+creating a file "say" with the contents: `!op YourUsername`
 in the Directory with the chatbot.php. This file is read by the Bot and 
 deleted afterwards. The Bot will now give you OP. The rest can be 
 configured by commands right in the Chat.
