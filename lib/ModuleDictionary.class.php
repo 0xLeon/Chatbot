@@ -19,7 +19,7 @@ class ModuleDictionary extends Module {
 		}
 		else if (substr(Module::removeWhisper($bot->message['text']), 0, 5) == '!dic ') {
 			if (Core::isOp($bot->lookUpUserID())) {
-				$data = explode(' ', substr(Module::removeWhisper($bot->message['text']), 5));
+				$data = explode(' ', substr(Module::removeWhisper($bot->message['text']), 5), 2);
 				$this->config->config[$data[0]] = $data[1];
 				$bot->success();
 			}
