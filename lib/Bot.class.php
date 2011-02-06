@@ -70,6 +70,7 @@ class Bot {
 			}
 			// read messages
 			$this->data = Bot::read();
+			if (!is_array($this->data['messages'])) continue;
 			foreach($this->data['messages'] as $this->message) {
 				$this->message['text'] = html_entity_decode(
 					preg_replace('~<a href="(.*)">(.*)</a>~U', "\${1}", 
@@ -170,7 +171,7 @@ class Bot {
 			if (count($this->queue)) {
 				self::getConnection()->postMessage(array_shift($this->queue));
 			}
-			usleep(250000);
+			usleep(600000);
 		}
 	}
 	
