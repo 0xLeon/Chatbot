@@ -37,5 +37,13 @@ class ModuleDictionary extends Module {
 				$bot->denied();
 			}
 		}
+		else if (Module::removeWhisper($bot->message['text']) == '!listdic') {
+			if (Core::isOp($bot->lookUpUserID())) {
+				$bot->queue('/whisper "'.$bot->message['usernameraw'].'" Gespeicherte Eintraege: '.implode(', ', array_keys($this->config->config)));
+			}
+			else {
+				$bot->denied();
+			}
+		}
 	}
 }
