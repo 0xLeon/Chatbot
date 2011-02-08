@@ -33,7 +33,7 @@ class ModuleQuotes extends Module {
 			}
 		}
 		else if (substr(Module::removeWhisper($bot->message['text']), 0, 10) == '!setquote ') {
-			$this->config->config[$bot->lookUpUserID()] = substr($bot->message['text'], 10);
+			$this->config->config[$bot->lookUpUserID()] = substr(Module::removeWhisper($bot->message['text']), 10);
 			$bot->success();
 		}
 		else if (Module::removeWhisper($bot->message['text']) == '!delquote') {
