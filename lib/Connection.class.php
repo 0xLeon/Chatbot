@@ -2,9 +2,9 @@
 /**
  * WCFApi provides methods to externally access a WCF
  * 
- * @author	Tim Düsterhus
+ * @author		Tim Düsterhus
  * @copyright	2010 Tim Düsterhus
- * @licence	GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @licence		GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
 class Connection {
 
@@ -186,11 +186,22 @@ class Connection {
 		return $this->securityToken;
 	}
 	
+	/**
+	 * Joins the chat
+	 *
+	 * @return	string	request answer
+	 */
 	public function joinChat() {
 		$this->url['query'] = 'page=Chat';
 		return $this->setRequest();
 	}
 	
+	/**
+	 * Sends a message
+	 *
+	 * @param	string	$message	message to send
+	 * @return	void
+	 */
 	public function postMessage($message) {
 		$this->url['query'] = 'form=Chat';
 		$this->request = array(
@@ -201,6 +212,12 @@ class Connection {
 		$this->setRequest(false);
 	}
 	
+	/**
+	 * Reads the message after $id
+	 *
+	 * @param	integer			$id	offset
+	 * @return	array<array>		json result
+	 */
 	public function readMessages($id) {
 		$this->url['query'] = 'page=ChatMessage&id='.$id;
 		$data = $this->setRequest();
@@ -210,29 +227,52 @@ class Connection {
 		return $data;
 	}
 	
+	/**
+	 * Joins the room
+	 * 
+	 * @param	integer	$roomID	room to join
+	 * @return	string	request answer
+	 */
 	public function join($roomID) {
 		$this->url['query'] = 'page=Chat&ajax=1&room='.$roomID;
 		$data = $this->setRequest(false);
 		return $data;
 	}
 	
+	/**
+	 * Returns the roomlist
+	 *
+	 * @return	string	request answer
+	 */
 	public function getRooms() {
 		$this->url['query'] = 'page=ChatRefreshRoomList';
 		$data = $this->setRequest();
 		return $data;
 	}
 
+	/**
+	 * Leaves the chat
+	 *
+	 * @return	void
+	 */
 	public function leave() {
 		$this->url['query'] = 'form=Chat&kill=1';
 		$this->setRequest(false);
 	}
 	
+	/**
+	 * Looks up the userID
+	 *
+	 * @param	string	$username	The username to check
+	 * @return	integer				The matching userID
+	 */
 	public function lookUp($username) {
 		$old = $this->url;
 		$this->url['query'] = 'page=User&username='.rawurlencode($username);
 		$data = $this->setRequest();
+		
+		// seo-plugin
 		if (preg_match('~Location: (.*)~', $data, $matches)) {
-			// $matches[1] is the new url
 			$this->url = parse_url('http://'.$this->url['host'].substr($matches[1],0,-1));
 			$data = $this->setRequest();
 		}
