@@ -17,11 +17,11 @@ class ModuleQuotes extends Module {
 				$bot->queue('['.$bot->message['usernameraw'].'] '.$this->config->config[$bot->lookUpUserID()]);
 			}
 		}
-		else if (substr($bot->message['text'], 0, 10) == '!setquote ') {
+		else if (substr(Module::removeWhisper($bot->message['text']), 0, 10) == '!setquote ') {
 			$this->config->config[$bot->lookUpUserID()] = substr($bot->message['text'], 10);
 			$bot->success();
 		}
-		else if ($bot->message['text'] == '!delquote') {
+		else if (Module::removeWhisper($bot->message['text']) == '!delquote') {
 			unset($this->config->config[$bot->lookUpUserID()]);
 			$bot->success();
 		}

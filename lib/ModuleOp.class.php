@@ -3,7 +3,7 @@ class ModuleOp extends Module {
 	public function destruct() {
 
 	}
-	public function handle(Bot $bot) {		
+	public function handle(Bot $bot) {
 		if (Module::removeWhisper($bot->message['text']) == '!shutdown') {
 			if (!Core::isOp($bot->lookUpUserID())) return $bot->denied();
 			exit;

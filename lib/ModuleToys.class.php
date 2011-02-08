@@ -14,8 +14,8 @@ class ModuleToys extends Module {
 			$bot->queue("Online seit: ".date('d.m.Y H:i:s', TIME));
 			$bot->queue("Gelesene Nachrichten: ".$bot->messageCount);
 		}
-		else if ($bot->message['text'] == '!ping') {
-			$bot->queue('['.$bot->message['usernameraw'].'] !pong');
+		else if (Module::removeWhisper($bot->message['text']) == '!ping') {
+			$bot->queue('/whisper "'.$bot->message['usernameraw'].'" !pong');
 		}
 		else if (substr($bot->message['text'], 0, 5) == '!dice') {
 			$command = substr($bot->message['text'], 5);
