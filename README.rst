@@ -31,7 +31,7 @@ userdata.php with the following contents::
 	define('ID', 2); // UserID of the bot-user
 	define('NAME', 'Chatbot'); // Username of the bot-user
 	define('HASH', '7421afc131519d342cd7ab097acfb20ef0143693'); // the login cookie of the bot
-	?>
+    ?>
 	
 After that you can run the bot on the Commandline-Interpreter (CLI) of PHP by
 the following command::
