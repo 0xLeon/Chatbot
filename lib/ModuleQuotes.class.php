@@ -17,6 +17,21 @@ class ModuleQuotes extends Module {
 				$bot->queue('['.$bot->message['usernameraw'].'] '.$this->config->config[$bot->lookUpUserID()]);
 			}
 		}
+		else if (substr(Module::removeWhisper($bot->message['text']), 0, 7) == '!quote ') {
+			$username = substr(Module::removeWhisper($bot->message['text']), 7);
+			$userID = $bot->lookUpUserID($username);
+			if ($userID) {
+				if (isset($this->config->config[$userID])) {
+					$bot->queue('/whisper "'.$bot->message['usernameraw'].'" ['.$username.'] '.$this->config->config[$userID]);
+				}
+				else {
+					$bot->queue('/whisper "'.$bot->message['usernameraw'].'" Der Benutzer hat kein Zitat');
+				}
+			}
+			else {
+				$bot->queue('/whisper "'.$bot->message['usernameraw'].'" Konnte den Benutzer '.$username.' nicht finden');
+			}
+		}
 		else if (substr(Module::removeWhisper($bot->message['text']), 0, 10) == '!setquote ') {
 			$this->config->config[$bot->lookUpUserID()] = substr($bot->message['text'], 10);
 			$bot->success();
