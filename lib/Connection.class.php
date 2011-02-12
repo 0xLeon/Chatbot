@@ -247,7 +247,13 @@ class Connection {
 	public function getRooms() {
 		$this->url['query'] = 'page=ChatRefreshRoomList';
 		$data = $this->setRequest();
-		return $data;
+		preg_match_all('~<option id="room([0-9]+)Option" value="room(?:[0-9]+)-(?:.*)"(?: selected="selected")?>(.*)</option>~Ui', $data, $matches);
+		
+		$rooms = array();
+		for ($i = 0, $max = count($matches[0]); $i < $max; $i++) {
+			$rooms[$matches[1][$i]] = $matches[2][$i];
+		}
+		return $rooms;
 	}
 
 	/**

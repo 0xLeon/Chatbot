@@ -21,5 +21,14 @@ class ModuleOp extends Module {
 			$bot->getConnection()->join(substr(Module::removeWhisper($bot->message['text']), 6));
 			$bot->success();
 		}
+		else if (Module::removeWhisper($bot->message['text']) == '!rooms') {
+			if (!Core::isOp($bot->lookUpUserID())) return $bot->denied();
+			$rooms = $bot->getConnection()->getRooms();
+			$roomString = array();
+			foreach ($rooms as $id => $name) {
+				$roomString[] = $name.': '.$id;
+			}
+			$bot->queue('/whisper "'.$bot->message['usernameraw'].'" Folgende Räume sind verfügbar: '.implode(', ', $roomString));
+		}
 	}
 }
