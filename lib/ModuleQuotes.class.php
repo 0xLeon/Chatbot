@@ -15,7 +15,7 @@ class ModuleQuotes extends Module {
 		if ($bot->message['text'] == 'hat den Chat betreten' && $bot->message['type'] == 1) {
 			if (isset($this->config->config[$bot->lookUpUserID()])) {
 				
-$bot->queue('['.$bot->message['usernameraw'].'] '.substr($this->config->config[$bot->lookUpUserID()], 0, 100));
+$bot->queue('['.$bot->message['usernameraw'].'] '.substr($this->config->config[$bot->lookUpUserID()], 0, 250));
 			}
 		}
 		else if (substr(Module::removeWhisper($bot->message['text']), 0, 7) == '!quote ') {

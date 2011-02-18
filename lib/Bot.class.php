@@ -94,6 +94,10 @@ class Bot {
 		}
 	}
 	
+	public function shutdown() {
+		posix_kill(getmypid(), SIGTERM);
+	}
+
 	/**
 	 * Checks whether we are in the parent process
 	 *
@@ -153,7 +157,7 @@ class Bot {
 				// remove crap
 				$this->message['text'] = html_entity_decode(
 					preg_replace('~<a href="(.*)">(.*)</a>~U', "\${1}", 
-						preg_replace('~<img src="(.*)\.png" alt="(.*)" />~U', "\${2}", 
+						preg_replace('~<img src="(.*)" alt="(.*)" />~U', "\${2}", 
 							$this->message['text']
 						)
 					)
