@@ -9,6 +9,9 @@ class ModuleToys extends Module {
 	}
 	
 	public function handle(Bot $bot) {
+		if (preg_match('~^\.\.\.+$~', $bot->message['text'])) {
+			$bot->queue('/me verwandelt sich in Pacman und isst alle Punkte auf');
+		}
 		if ($bot->message['text'] == '!info') {
 			$bot->queue("Information:");
 			$bot->queue("Online seit: ".date('d.m.Y H:i:s', TIME));
