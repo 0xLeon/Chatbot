@@ -3,7 +3,7 @@
  * Main Bot class, handles messages
  *
  * @author		Tim Düsterhus
- * @copyright	2010 Tim Düsterhus
+ * @copyright	2010 - 2011 Tim Düsterhus
  */
 class Bot {
 	/**
