@@ -2,8 +2,8 @@
 /**
  * Initializes the bot
  *
- * @author		Tim Düsterhus
- * @copyright	2010 Tim Düsterhus
+ * @author		Tim DÃ¼sterhus
+ * @copyright	2010 Tim DÃ¼sterhus
  */
  
 date_default_timezone_set('Europe/Berlin');
