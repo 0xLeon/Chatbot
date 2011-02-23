@@ -2,9 +2,9 @@
 /**
  * WCFApi provides methods to externally access a WCF
  * 
- * @author		Tim Düsterhus
+ * @author	Tim Düsterhus
  * @copyright	2010 Tim Düsterhus
- * @licence		GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @licence	GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
 class Connection {
 

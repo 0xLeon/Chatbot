@@ -1,11 +1,47 @@
 <?php
+/**
+ * Core-class. Provides basic module handling
+ *
+ * @author	Tim Düsterhus
+ * @copyright	2010 - 2011 Tim Düsterhus
+ */
 class Core {
 	
+	/**
+	 * Singleton-Instance
+	 *
+	 * @var	Core
+	 */
 	private static $instance = null;
+	
+	/**
+	 * Main-Config
+	 *
+	 * @var	Config
+	 */
 	private static $config = null;
+	
+	/**
+	 * Logger
+	 *
+	 * @var	Log
+	 */
 	private static $log = null;
+	
+	/**
+	 * Bot-instance
+	 *
+	 * @var	Bot
+	 */
 	private static $bot = null;
+	
+	/**
+	 * Holds the loaded modules
+	 *
+	 * @var	array<Module>
+	 */
 	private static $modules = array();
+	
 	private function __construct() {
 		self::init();
 		self::$log = new Log();
@@ -22,6 +58,11 @@ class Core {
 		self::bot()->work();
 	}
 	
+	/**
+	 * Initializes folders
+	 *
+	 * @return	void
+	 */
 	protected static function init() {
 		if (!file_exists(DIR.'log/')) mkdir(DIR.'log/', 0777);
 		if (!file_exists(DIR.'cache/')) mkdir(DIR.'cache/', 0777);

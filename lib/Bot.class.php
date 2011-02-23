@@ -1,8 +1,8 @@
-<?php
+﻿<?php
 /**
  * Main Bot class, handles messages
  *
- * @author		Tim Düsterhus
+ * @author	Tim Düsterhus
  * @copyright	2010 - 2011 Tim Düsterhus
  */
 class Bot {
