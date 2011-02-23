@@ -95,11 +95,21 @@ class Core {
 	public static function isOp($userID) {
 		return isset(self::config()->config['op'][$userID]);
 	}
-	
+
+	/**
+	 * Loads the given module
+	 *
+	 * @var		string	$module		module-name
+	 * @return	string			module-address
+	 */
 	public static function loadModule($module) {
+		// handle loaded
 		if (isset(self::$modules[$module])) return self::log()->error = 'Tried to load module '.$module.' that is already loaded';
+		
+		// handle wrong name
 		if (!file_exists(DIR.'lib/Module'.ucfirst($module).'.class.php')) return self::log()->error = 'Tried to load module '.$module.' but there is no matching classfile';
 		
+		// copy to prevent classname conflicts
 		$address = 'Module'.substr(StringUtil::getRandomID(), 0, 8);
 		$data = str_replace('class Module'.$module.' ',  "// Module is: ".$module."\nclass ".$address.' ', file_get_contents(DIR.'lib/Module'.ucfirst($module).'.class.php'));
 		file_put_contents(DIR.'cache/'.$address.'.class.php', $data);
@@ -118,6 +128,12 @@ class Core {
 		return $address;
 	}
 	
+	/**
+	 * Unloads the given module
+	 *
+	 * @var		string	$module		module-name
+	 * @return	void
+	 */
 	public static function unloadModule($module) {
 		if (!isset(self::$modules[$module])) return self::log()->error = 'Tried to unload module '.$module.' that is not loaded';
 		$address = get_class(self::$modules[$module]);
@@ -130,14 +146,25 @@ class Core {
 		self::config()->write();
 		
 		self::log()->info = 'Unloaded module '.$module.' @ '.$address;
-		return $address;
 	}
 	
+	/**
+	 * Reloads the given module
+	 *
+	 * @var		string	$module		module-name
+	 * @return	void
+	 */
 	public static function reloadModule($module) {
 		self::unloadModule($module);
 		self::loadModule($module);
 	}
 	
+	/**
+	 * Checks whether the module is loaded
+	 
+	 * @var		string	$module		module-name
+	 * @return	boolean			module loaded
+	 */
 	public static function moduleLoaded($module) {
 		return isset(self::$modules[$module]);
 	}
@@ -166,6 +193,15 @@ class Core {
 		}
 	}
 	
+	/**
+	 * Logs PHP-Errors
+	 *
+	 * @var		int	$errorNo	error-number
+	 * @var		string	$message	error-message
+	 * @var		string	$filename	file with error
+	 * @var		int	$lineNo		line in the file
+	 * @return	void
+	 */
 	public static final function handleError($errorNo, $message, $filename, $lineNo) { 
 		if (error_reporting() != 0) {
 			$type = 'error';
