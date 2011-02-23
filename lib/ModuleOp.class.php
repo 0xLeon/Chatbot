@@ -6,6 +6,7 @@ class ModuleOp extends Module {
 	public function handle(Bot $bot) {
 		if (Module::removeWhisper($bot->message['text']) == '!shutdown') {
 			if (!Core::isOp($bot->lookUpUserID())) return $bot->denied();
+			Core::log()->info = $bot->message['usernameraw'].' shutted the muschel down';
 			$bot->shutdown();
 		}
 		else if (substr(Module::removeWhisper($bot->message['text']), 0, 5) == '!say ') {
