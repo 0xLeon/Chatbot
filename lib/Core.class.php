@@ -51,6 +51,7 @@ class Core {
 		self::$bot = new Bot();
 		
 		$modules = self::config()->config['modules'];
+		// load default modules
 		self::log()->info = 'Loading Modules';
 		foreach ($modules as $module) {
 			self::loadModule($module);
@@ -69,21 +70,32 @@ class Core {
 		if (!file_exists(DIR.'config/')) mkdir(DIR.'config/', 0777);
 	}
 	
+	/**
+	 * Shuts the bot down
+	 *
+	 * @return	void
+	 */
 	public static function destruct() {
+		// break in child
 		if (self::$bot !== null) {
 			if (!self::$bot->isParent()) return;
 		}
 		self::$log->info = 'Shutting down';
+		
+		// send leave message
 		self::$bot->getConnection()->leave();
 		self::$log->info = 'Left chat';
+		// write the configs
 		self::$config->write();
 		self::$log->info = 'Written config';
 		
+		// call destructors of modules
 		foreach (self::$modules as $module) {
 			$module->destruct();
 		}
 		self::$log->info = 'Unloading modules';
 		
+		// clear class cache
 		$files = glob(DIR.'cache/*.class.php');
 		foreach ($files as $file) {
 			unlink($file);
@@ -161,7 +173,7 @@ class Core {
 	
 	/**
 	 * Checks whether the module is loaded
-	 
+	 *
 	 * @var		string	$module		module-name
 	 * @return	boolean			module loaded
 	 */
@@ -169,10 +181,20 @@ class Core {
 		return isset(self::$modules[$module]);
 	}
 	
+	/**
+	 * Return the loaded modules
+	 * 
+	 * @return	array<Module>
+	 */
 	public static function getModules() {
 		return self::$modules;
 	}
 	
+	/**
+	 * Returns the Core-object
+	 * 
+	 * @return	Core		Singleton-Instance
+	 */
 	public final static function get() {
 		if (self::$instance === null) {
 			self::$instance = new self();
