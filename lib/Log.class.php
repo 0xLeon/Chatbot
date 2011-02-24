@@ -1,6 +1,6 @@
 <?php
 /**
- * Core-class. Provides basic module handling
+ * Logger
  *
  * @author	Tim Düsterhus
  * @copyright	2010 - 2011 Tim Düsterhus
