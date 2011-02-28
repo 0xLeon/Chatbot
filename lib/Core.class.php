@@ -2,8 +2,8 @@
 /**
  * Core-class. Provides basic module handling
  *
- * @author	Tim Düsterhus
- * @copyright	2010 - 2011 Tim Düsterhus
+ * @author	Tim DÃ¼sterhus
+ * @copyright	2010 - 2011 Tim DÃ¼sterhus
  */
 class Core {
 	

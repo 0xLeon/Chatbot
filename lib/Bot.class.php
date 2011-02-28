@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Main Bot class, handles messages
  *
@@ -234,7 +234,10 @@ class Bot {
 					// handle the modules
 					$modules = Core::getModules();
 					foreach ($modules as $module) {
-						$module->handle($this);
+						$userID = $this->lookUpUserID($this->message['usernameraw']);
+						if (($module instanceof AlwaysFire) || !isset(Core::config()->config['ignore'][$userID])) {
+							$module->handle($this);
+						}
 					}
 				}
 			}

@@ -23,7 +23,7 @@ function __autoload($class) {
 	require_once(DIR.'lib/'.$class.'.class.php');
 }
 
-set_error_handler(array('Core', 'handleError'));
+set_error_handler(array('Core', 'handleError'), E_ALL|E_STRICT|E_WARNING|E_NOTICE);
 
 // start up 
 Core::get();

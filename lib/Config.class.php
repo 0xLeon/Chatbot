@@ -26,6 +26,8 @@ class Config {
 		'op' => array(
 			ID => ID
 		),
+		'ignore' => array(
+		),
 		'stfu' => false
 	)) {
 		$this->type = $type;
