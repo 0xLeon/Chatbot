@@ -6,8 +6,13 @@ class ModuleOp extends Module {
 	public function handle(Bot $bot) {
 		if (Module::removeWhisper($bot->message['text']) == '!shutdown') {
 			if (!Core::isOp($bot->lookUpUserID())) return $bot->denied();
-			Core::log()->info = $bot->message['usernameraw'].' shutted the muschel down';
+			Core::log()->info = $bot->message['usernameraw'].' shutted the bot down';
 			$bot->shutdown();
+		}
+		else if (Module::removeWhisper($bot->message['text']) == '!restart') {
+			if (!Core::isOp($bot->lookUpUserID())) return $bot->denied();
+                        Core::log()->info = $bot->message['usernameraw'].' restarted the bot';
+                        $bot->shutdown(SIGUSR1);
 		}
 		else if (substr(Module::removeWhisper($bot->message['text']), 0, 5) == '!say ') {
 			if (!Core::isOp($bot->lookUpUserID())) return $bot->denied();

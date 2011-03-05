@@ -78,12 +78,14 @@ class Bot {
 	public function signalHandler($signo) {
 		switch ($signo) {
 			case SIGTERM:
+			case SIGUSR1:
 				// handle shutdown tasks
 				if ($this->child !== 0) {
-					Core::log()->error = 'Received SIGTERM';
+					Core::log()->error = 'Received SIGTERM / SIGUSR1';
 					posix_kill($this->child, SIGTERM); 
 				}
-				exit;
+				if ($signo === SIGTERM) exit;
+				else exit(2);
 			case SIGCHLD:
 				pcntl_waitpid(-1, $status);
 				Core::log()->error = 'Child died, reforking';
@@ -94,8 +96,8 @@ class Bot {
 		}
 	}
 	
-	public function shutdown() {
-		posix_kill(getmypid(), SIGTERM);
+	public function shutdown($signal = SIGTERM) {
+		posix_kill(getmypid(), $signal);
 	}
 
 	/**
@@ -131,6 +133,7 @@ class Bot {
 		// register some functions
 		pcntl_signal(SIGTERM, array($this, 'signalHandler'));
 		pcntl_signal(SIGCHLD, array($this, 'signalHandler'));
+		pcntl_signal(SIGUSR1, array($this, 'signalHandler'));
 		register_shutdown_function(array('Core', 'destruct'));
 		
 		$this->needRefork = true;
