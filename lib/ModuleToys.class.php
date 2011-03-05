@@ -3,14 +3,18 @@ class ModuleToys extends Module {
 	public static $eight = array('Wenn Gott es will', 'Nein!', 'Ja!', 'Lass mich schlafen', 'Auf jeden Fall',
 		'Ich muss darüber nachdenken', 'Natürlich nicht', 'Frag morgen nochmal', 'Meine Glaskugel ist derzeit in Reparatur',
 		'Vielleicht', 'Hör auf! Hör auf! Hör auf!', 'Was war nochmal die Frage?');
-		
+	public static $KimKola = array('War das nicht irgendein berühmter Schauspieler?', 'Irgendwoher kenn ich diesen Namen...', 'Hat mal wer ne Cola für mich?', 'Das wird "Cola" geschrieben ihr dödel!');
+
 	public function destruct() {
-	
+
 	}
-	
+
 	public function handle(Bot $bot) {
 		if (preg_match('~^\.\.\.+$~', $bot->message['text'])) {
 			$bot->queue('/me verwandelt sich in Pacman und isst alle Punkte auf');
+		}
+		if(strstr($bot->message['text'], 'TimWolla')){
+			$bot->queue('KimKola? '.self::$KimKola(rand(0, (count(self::$KimKola)-1))));
 		}
 		if ($bot->message['text'] == '!info') {
 			$bot->queue("Information:");
