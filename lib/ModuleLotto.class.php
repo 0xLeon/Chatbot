@@ -20,7 +20,7 @@ class ModuleLotto extends Module {
 			$this->startLotto();
 		} else {
 			$bot->queue('Es läuft bereits ein Lottospiel!');
-			$bot->queue('Postet einfach eure Tipps mit z.B. "!tipp 13 25 29 19 20 30 49 12". Die vorletzte Zahl ist die Zusatzzahl und die letzte die Superzahl');
+			$bot->queue('Postet einfach eure Tipps mit z.B. "!tipp 13 25 29 19 20 30". Die vorletzte Zahl ist die Zusatzzahl und die letzte die Superzahl');
 		}
 		if (preg_match('~\!tipp [0-9]+', $bot->message['text']) && $this->gameActive) {
 			$numbers = str_replace('!tipp', '', $bot->message['text']);
@@ -34,21 +34,25 @@ class ModuleLotto extends Module {
 	public function startLotto($max = 49) {
 		$this->game = true;
 
-		$bot->queue('Yay! Die Lottorunde beginnt. Wir spielen 6 (+2) aus 49!');
-		$bot->queue('Postet einfach eure Tipps mit z.B. "!tipp 13 25 29 19 20 30 49 12". Die vorletzte Zahl ist die Zusatzzahl und die letzte die Superzahl');
+		$bot->queue('Yay! Die Lottorunde beginnt. Wir spielen 6 aus 49!');
+		$bot->queue('Postet einfach eure Tipps mit z.B. "!tipp 13 25 29 19 20 30". Die vorletzte Zahl ist die Zusatzzahl und die letzte die Superzahl');
 		$this->randNumbers();
 		$this->startRegTime();
 	}
 
-	public function randNumbers() {
+	public function randNumbers($max = 49) {
 		for ($i = 0; $i < 9; $i++) {
-			$this->numbers[$i] = mt_rand(0, $max);
+			$rand = mt_rand(0, $max);
+			if(!array_search($rand, $this->numbers))
+				$this->numbers[$i] = $rand;
 		}
 	}
 
 	public function shoutWinners() {
 		$bot->queue('Die Lottorunde ist vorbei! Folgende User haben getippt: ' . implode(', ', $this->players));
 		$bot->queue('Die gezogenen Zahlen sind ' . implode(', ', $this->numbers));
+		asort($this->players);
+		asort($this->numbers);
 		foreach ($this->players as $player => $number) {
 			$reward = 0;
 			foreach ($this->numbers as $index => $value) {
@@ -74,7 +78,8 @@ class ModuleLotto extends Module {
 
 	public function regUser($nickname, array $numbers) {
 		foreach ($numbers as $index => $value) {
-			$this->players[$nickname][$index] = $value;
+			if(!array_search($value, $this->players[$nickname]))
+				$this->players[$nickname][$index] = $value;
 		}
 		$bot->queue('/whisper "' . $nickname . '" Deine Zahlen wurden erfolgreich registriert.');
 	}
