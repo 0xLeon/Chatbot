@@ -2,6 +2,7 @@
 
 class ModuleLotto extends Module {
 
+	// todo: save all wins in database.
 	public static $numbers = array();
 	public static $players = array();
 	public static $game = false;
@@ -14,7 +15,7 @@ class ModuleLotto extends Module {
 		if ($bot->message['text'] == '!lotto') {
 			$this->startLotto();
 		}
-		if(preg_match('~\!tipp [0-9]+', $bot->message['text']) && self::$game){
+		if (preg_match('~\!tipp [0-9]+', $bot->message['text']) && self::$game) {
 			$numbers = preg_replace('!tipp', '', $bot->message['text']);
 			$numbers = explode(' ', $numbers);
 			$this->regUser($bot->message['usernameraw'], $numbers);
@@ -40,10 +41,13 @@ class ModuleLotto extends Module {
 		self::$game = false;
 		$bot->queue('Die Lottorunde ist vorbei! Folgende User haben getippt: ' . implode(', ', self::$players));
 		$bot->queue('Die gezogenen Zahlen sind ' . implode(', ', self::$numbers));
-		foreach(self::$numbers as $index => $value){
-			foreach(self::$players as $player => $number){
-				// ...
+		foreach (self::$players as $player => $number) {
+			$döner = 0;
+			foreach (self::$numbers as $index => $value) {
+				if ($value == $numbers)
+					$döner++;
 			}
+			$bot->queue($player . ': ' . implode(', ', $number) . ' - ' . $döner . ' eDönerGutscheine'); // maybe randomize currency?
 		}
 	}
 
@@ -57,8 +61,11 @@ class ModuleLotto extends Module {
 		$this->shoutWinners();
 	}
 
-	public function regUser($nickname, array $numbers){
-		$bot->queue('/whisper "'.$nickname.'" Deine Zahlen wurden erfolgreich registriert.');
+	public function regUser($nickname, array $numbers) {
+		foreach ($numbers as $index => $value) {
+			self::$players[$nickname][$index] = $value;
+		}
+		$bot->queue('/whisper "' . $nickname . '" Deine Zahlen wurden erfolgreich registriert.');
 	}
 
 }
