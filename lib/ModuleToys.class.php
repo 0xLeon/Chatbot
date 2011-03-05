@@ -14,7 +14,7 @@ class ModuleToys extends Module {
 			$bot->queue('/me verwandelt sich in Pacman und isst alle Punkte auf');
 		}
 		if(strstr($bot->message['text'], 'TimWolla')){
-			$bot->queue('KimKola? '.self::$KimKola(rand(0, (count(self::$KimKola)-1))));
+			$bot->queue('KimKola? '.self::$KimKola[rand(0, (count(self::$KimKola)-1))]);
 		}
 		if ($bot->message['text'] == '!info') {
 			$bot->queue("Information:");
