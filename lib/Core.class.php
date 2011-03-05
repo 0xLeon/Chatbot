@@ -125,13 +125,9 @@ class Core {
 		$address = 'Module'.substr(StringUtil::getRandomID(), 0, 8);
 		$data = str_replace('class Module'.$module.' ',  "// Module is: ".$module."\nclass ".$address.' ', file_get_contents(DIR.'lib/Module'.ucfirst($module).'.class.php'));
 		file_put_contents(DIR.'cache/'.$address.'.class.php', $data);
-		if (!php_check_syntax(DIR.'cache/'.$address.'.class.php')) return self::log()->error = 'Tried to load module '.$module.' that includes PHP-Syntax-Errors';
-		
-		// Load
+
 		require_once(DIR.'cache/'.$address.'.class.php');
 		self::$modules[$module] = new $address();
-		
-		// Check whether it is a module
 		if (!self::$modules[$module] instanceof Module) {
 			self::log()->error = 'Tried to load Module '.$module.' but it is no module, unloading';
 			return self::unloadModule($module);
