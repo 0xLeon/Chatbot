@@ -12,9 +12,9 @@ class ModuleLotto extends Module {
 	}
 
 	public function handle(Bot $bot) {
-		if ($bot->message['text'] == '!lotto' && !$game) {
+		if ($bot->message['text'] == '!lotto' && !self::$game) {
 			$this->startLotto();
-		}else{
+		} else {
 			$bot->queue('Es läuft bereits ein Lottogame!');
 			$bot->queue('Postet einfach eure Tipps mit z.B. "!tipp 13 25 29 19 20 30 49 12". Die vorletzte Zahl ist die Zusatzzahl und die letzte die Superzahl');
 		}
