@@ -36,7 +36,8 @@ userdata.php with the following contents::
 After that you can run the bot on the Commandline-Interpreter (CLI) of PHP by
 the following command::
     
-	php chatbot.php
+	./observe.sh
+
 	
 The bot will create needed directories and forks itself afterwards. From that
 time there will always be two processes. After that you will have to grant
