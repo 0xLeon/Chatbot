@@ -21,15 +21,15 @@ class ModuleLotto extends Module {
 			$this->startLotto();
 		} else {
 			$bot->queue('Es läuft bereits ein Lottospiel!');
-			$bot->queue('Postet einfach eure Tipps mit z.B. "!tipp 13 25 29 19 20 30". Die vorletzte Zahl ist die Zusatzzahl und die letzte die Superzahl');
+			$bot->queue('Postet einfach eure Tipps mit z.B. "!tipp 13 25 29 19 20 30"');
 		}
 
-		if (preg_match('~\!tipp [0-9]+', $bot->message['text']) && $this->gameActive) {
+		if (preg_match('~!tipp [0-9]+', $bot->message['text']) && $this->gameActive) {
 			$numbers = str_replace('!tipp', '', $bot->message['text']);
 			$numbers = explode(' ', $numbers);
 			$this->regUser($bot->message['usernameraw'], $numbers);
 		} else {
-			$bot->queue('Es läuft immoment kein Lottospiel. Benutze "!lotto" um dies zu ändern!');
+			$bot->queue('Es läuft im Moment kein Lottospiel. Benutze "!lotto" um dies zu ändern!');
 		}
 	}
 
@@ -37,7 +37,7 @@ class ModuleLotto extends Module {
 		$this->gameActive = true;
 
 		$bot->queue('Yay! Die Lottorunde beginnt. Wir spielen 6 aus 49!');
-		$bot->queue('Postet einfach eure Tipps mit z.B. "!tipp 13 25 29 19 20 30". Die vorletzte Zahl ist die Zusatzzahl und die letzte die Superzahl');
+		$bot->queue('Postet einfach eure Tipps mit z.B. "!tipp 13 25 29 19 20 30".');
 		$this->randNumbers();
 		$this->startRegTime();
 	}
