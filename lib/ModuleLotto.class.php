@@ -84,9 +84,9 @@ class ModuleLotto extends Module {
 
 	public function regUser($nickname, array $numbers) {
 		for ($i = 0; $i < 7; $i++) { // to avoid > 6 numbers in array
-			if (!array_search($value, $this->players[$nickname]))
+			if (!array_search($value, $this->players[$nickname])) {
 				$this->players[$nickname][$i] = $numbers[$i];
-			else{
+			} else {
 				$bot->queue('/whisper "' . $nickname . '" Bitte überprüfe deine Eingabe, es gibt eine oder mehrere Zahlen, die doppelt vorkommen.');
 				return;
 			}
