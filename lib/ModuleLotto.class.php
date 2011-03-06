@@ -87,11 +87,16 @@ class ModuleLotto extends Module {
 
 	public function regUser($nickname, array $numbers) {
 		$numbers = array_unique($numbers);
-		foreach ($numbers as $key => $val)
-			if ($val > $this->max)
+		foreach ($numbers as $key => $val) {
+			if ($val > $this->max) {
 				unset($numbers[$key]);
+			} else {
+				$this->players[$nickname][$key] = $val;
+			}
+		}
 		if (count($numbers) != $this->numbers) {
 			$bot->queue('/whisper "' . $nickname . '" Deine Zahlen sind ungültig.');
+			unset($this->players[$nickname]);
 		} else {
 			$bot->success();
 		}
