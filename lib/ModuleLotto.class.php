@@ -16,23 +16,25 @@ class ModuleLotto extends Module {
 		if ($this->gameActive && time() >= ($this->timeBefore + 60)) {
 			$this->shoutWinners();
 		}
-		if ($bot->message['text'] == '!lotto' && !$this->game) {
+
+		if ($bot->message['text'] == '!lotto' && !$this->gameActive) {
 			$this->startLotto();
 		} else {
 			$bot->queue('Es läuft bereits ein Lottospiel!');
 			$bot->queue('Postet einfach eure Tipps mit z.B. "!tipp 13 25 29 19 20 30". Die vorletzte Zahl ist die Zusatzzahl und die letzte die Superzahl');
 		}
+
 		if (preg_match('~\!tipp [0-9]+', $bot->message['text']) && $this->gameActive) {
 			$numbers = str_replace('!tipp', '', $bot->message['text']);
 			$numbers = explode(' ', $numbers);
 			$this->regUser($bot->message['usernameraw'], $numbers);
 		} else {
-			$bot->queue('Es läuft immoment kein Lottospiel. Benutze !lotto um dies zu ändern!');
+			$bot->queue('Es läuft immoment kein Lottospiel. Benutze "!lotto" um dies zu ändern!');
 		}
 	}
 
 	public function startLotto($max = 49) {
-		$this->game = true;
+		$this->gameActive = true;
 
 		$bot->queue('Yay! Die Lottorunde beginnt. Wir spielen 6 aus 49!');
 		$bot->queue('Postet einfach eure Tipps mit z.B. "!tipp 13 25 29 19 20 30". Die vorletzte Zahl ist die Zusatzzahl und die letzte die Superzahl');
@@ -41,10 +43,12 @@ class ModuleLotto extends Module {
 	}
 
 	public function randNumbers($max = 49) {
-		for ($i = 0; $i < 9; $i++) {
+		for ($i = 0; $i < 7; $i++) {
 			$rand = mt_rand(0, $max);
-			if(!array_search($rand, $this->numbers))
+			if (!array_search($rand, $this->numbers))
 				$this->numbers[$i] = $rand;
+			else
+				$i--;
 		}
 	}
 
@@ -53,13 +57,15 @@ class ModuleLotto extends Module {
 		$bot->queue('Die gezogenen Zahlen sind ' . implode(', ', $this->numbers));
 		asort($this->players);
 		asort($this->numbers);
-		foreach ($this->players as $player => $number) {
+		foreach ($this->players as $player => $numbers) {
 			$reward = 0;
-			foreach ($this->numbers as $index => $value) {
-				if ($value == $numbers)
+			asort($numbers);
+			foreach ($numbers as $id => $number) {
+				$value = $this->numbers[$id];
+				if ($value == $number)
 					$reward++;
 			}
-			$bot->queue($player . ': ' . implode(', ', $number) . ' - ' . $reward . ' eDönerGutscheine'); // maybe randomize currency?
+			$bot->queue($player . ': ' . implode(', ', $numbers) . ' - ' . $reward . ' eDönerGutscheine'); // maybe randomize currency?
 		}
 		$bot->queue('Eventuell können die Gutscheine irgendwannmal eingelöst werden :)');
 		$this->reset();
@@ -77,9 +83,9 @@ class ModuleLotto extends Module {
 	}
 
 	public function regUser($nickname, array $numbers) {
-		foreach ($numbers as $index => $value) {
-			if(!array_search($value, $this->players[$nickname]))
-				$this->players[$nickname][$index] = $value;
+		for ($i = 0; $i < 7; $i++) { // to avoid > 6 numbers in array
+			if (!array_search($value, $this->players[$nickname]))
+				$this->players[$nickname][$i] = $numbers[$i];
 		}
 		$bot->queue('/whisper "' . $nickname . '" Deine Zahlen wurden erfolgreich registriert.');
 	}
