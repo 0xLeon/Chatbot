@@ -3,34 +3,38 @@
 class ModuleLotto extends Module {
 
 	// todo: save all wins in database.
-	private $numbers = array();
-	private $players = array();
-	public $gameActive = false;
-	public $timeBefore = 0;
+	protected $drawnNumbers = array();
+	protected $players = array();
+	protected $gameActive = false;
+	protected $timeStart = 0;
 	protected $numbers = 0, $max = 0;
-
+	protected $bot;
+	
 	public function destruct() {
 
 	}
 
 	public function handle(Bot $bot) {
-		if ($this->gameActive && time() >= ($this->timeBefore + 60)) {
+		$this->bot = $bot;
+		if ($this->gameActive && ($this->timeStart + 60) < time()) {
 			$this->shoutWinners();
 		}
 
-		if ($bot->message['text'] == '!lotto' && !$this->gameActive) {
+		if ($this->bot->message['text'] == '!lotto' && !$this->gameActive) {
 			$this->startLotto();
-		} else {
-			$bot->queue('Es läuft bereits ein Lottospiel!');
-			$bot->queue('Postet einfach eure Tipps mit z.B. "!tipp 13 25 29 19 20 30"');
+		}
+		else if ($this->bot->message['text'] == '!lotto') {
+			$this->bot->queue('Es läuft bereits ein Lottospiel!');
+			$this->bot->queue('Postet einfach eure Tipps mit z.B. "!tipp 13 25 29 19 20 30"');
 		}
 
-		if (substr($bot->message['text'], 0, 6) == '!tipp ' && $this->gameActive) {
-			$numbers = str_replace('!tipp', '', $bot->message['text']);
+		if (substr($this->bot->message['text'], 0, 6) == '!tipp ' && $this->gameActive) {
+			$numbers = str_replace('!tipp', '', $this->bot->message['text']);
 			$numbers = explode(' ', $numbers);
-			$this->regUser($bot->message['usernameraw'], $numbers);
-		} else {
-			$bot->queue('Es läuft im Moment kein Lottospiel. Benutze "!lotto" um dies zu ändern!');
+			$this->regUser($this->bot->message['usernameraw'], $numbers);
+		}
+		else if (substr($this->bot->message['text'], 0, 6) == '!tipp ') {
+			$this->bot->queue('Es läuft im Moment kein Lottospiel. Benutze "!lotto" um dies zu ändern!');
 		}
 	}
 
@@ -39,24 +43,25 @@ class ModuleLotto extends Module {
 		$this->numbers = $numbers;
 		$this->max = $max;
 
-		$bot->queue('Yay! Die Lottorunde beginnt. Wir spielen ' . $this->numbers . ' aus ' . $this->max . '!');
-		$bot->queue('Postet einfach eure Tipps mit z.B. "!tipp 13 25 29 19 20 30".');
+		$this->bot->queue('Yay! Die Lottorunde beginnt. Wir spielen ' . $this->numbers . ' aus ' . $this->max . '!');
+		$this->bot->queue('Postet einfach eure Tipps mit z.B. "!tipp 13 25 29 19 20 30".');
 		$this->randNumbers();
-		$this->startRegTime();
+		$this->timeStart = time();
 	}
 
 	public function randNumbers() {
 		do {
 			$number = rand(1, $this->max);
-			if (!in_array($number, $this->drawnNumbers))
-				$this->drawnNumbers[] = $rand;
+			if (!in_array($number, $this->drawnNumbers)) {
+				$this->drawnNumbers[] = $number;
+			}
 		}
-		while (count($this->numbers) < $this->numbers);
+		while (count($this->drawnNumbers) < $this->numbers);
 	}
 
 	public function shoutWinners() {
-		$bot->queue('Die Lottorunde ist vorbei! Folgende User haben getippt: ' . implode(', ', $this->players));
-		$bot->queue('Die gezogenen Zahlen sind ' . implode(', ', $this->drawnNumbers));
+		$this->bot->queue('Die Lottorunde ist vorbei! Folgende User haben getippt: ' . implode(', ', $this->players));
+		$this->bot->queue('Die gezogenen Zahlen sind ' . implode(', ', $this->drawnNumbers));
 		asort($this->players);
 		asort($this->numbers);
 		foreach ($this->players as $player => $numbers) {
@@ -67,9 +72,9 @@ class ModuleLotto extends Module {
 				if ($value == $number)
 					$reward++;
 			}
-			$bot->queue($player . ': ' . implode(', ', $numbers) . ' - ' . $reward . ' eDönerGutscheine'); // maybe randomize currency?
+			$this->bot->queue($player . ': ' . implode(', ', $numbers) . ' - ' . $reward . ' eDönerGutscheine'); // maybe randomize currency?
 		}
-		$bot->queue('Eventuell können die Gutscheine irgendwannmal eingelöst werden :)');
+		$this->bot->queue('Eventuell können die Gutscheine irgendwannmal eingelöst werden :)');
 		$this->reset();
 	}
 
@@ -78,11 +83,7 @@ class ModuleLotto extends Module {
 		$this->drawnNumbers = array();
 		$this->players = array();
 		$this->gameActive = false;
-		$this->timeBefore = 0;
-	}
-
-	public function startRegTime() {
-		$this->timeBefore = time();
+		$this->timeStart = 0;
 	}
 
 	public function regUser($nickname, array $numbers) {
@@ -95,13 +96,11 @@ class ModuleLotto extends Module {
 			}
 		}
 		if (count($numbers) != $this->numbers) {
-			$bot->queue('/whisper "' . $nickname . '" Deine Zahlen sind ungültig.');
+			$this->bot->queue('/whisper "' . $nickname . '" Deine Zahlen sind ungültig.');
 			unset($this->players[$nickname]);
 		} else {
-			$bot->success();
+			$this->bot->success();
 		}
 	}
-
 }
-
 ?>
