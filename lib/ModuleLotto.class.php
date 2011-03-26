@@ -29,7 +29,8 @@ class ModuleLotto extends Module {
 		}
 
 		if (substr($this->bot->message['text'], 0, 6) == '!tipp ' && $this->gameActive) {
-			$numbers = str_replace('!tipp', '', $this->bot->message['text']);
+			$numbers = str_replace('!tipp ', '', StringUtil::trim($this->bot->message['text']));
+			$numbers = preg_replace('~\s\s+~', '', $numbers);
 			$numbers = explode(' ', $numbers);
 			$this->regUser($this->bot->message['usernameraw'], $numbers);
 		}
@@ -73,7 +74,7 @@ class ModuleLotto extends Module {
 				if ($value == $number)
 					$reward++;
 			}
-			$this->bot->queue($player . ': ' . implode(', ', $numbers) . ' - ' . $reward . ' eDönerGutscheine'); // maybe randomize currency?
+			$this->bot->queue($player . ': ' . implode(', ', $numbers) . ' - ' . $reward . ' Punkte');
 		}
 		$this->reset();
 	}
