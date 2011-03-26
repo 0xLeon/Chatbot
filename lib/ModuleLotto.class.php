@@ -44,7 +44,7 @@ class ModuleLotto extends Module {
 		$this->numbers = $numbers;
 		$this->max = $max;
 
-		$this->bot->queue('Yay! Die Lottorunde beginnt. Wir spielen ' . $this->numbers . ' aus ' . $this->max . '!');
+		$this->bot->queue('Die Lottorunde beginnt. Wir spielen ' . $this->numbers . ' aus ' . $this->max . '!');
 		$this->bot->queue('Postet einfach eure Tipps mit z.B. "!tipp 13 25 29 19 20 30".');
 		$this->randNumbers();
 		$this->timeStart = time();
@@ -69,11 +69,11 @@ class ModuleLotto extends Module {
 			$reward = 0;
 			asort($numbers);
 			foreach ($numbers as $id => $number) {
-				$value = $this->numbers[$id];
+				$value = $this->drawnNumbers[$id];
 				if ($value == $number)
 					$reward++;
 			}
-			$this->bot->queue($player . ': ' . implode(', ', $numbers) . ' - ' . $reward . ' Punkte');
+			$this->bot->queue('['.$player . '] ' . implode(', ', $numbers) . ' - ' . $reward . ' Punkte');
 		}
 		$this->reset();
 	}
