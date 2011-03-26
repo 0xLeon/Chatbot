@@ -61,10 +61,9 @@ class ModuleLotto extends Module {
 	}
 
 	public function shoutWinners() {
-		asort($this->players);
 		asort($this->drawnNumbers);
 		
-		$this->bot->queue('Die Lottorunde ist vorbei! Folgende User haben getippt: ' . implode(', ', $this->players));
+		$this->bot->queue('Die Lottorunde ist vorbei! Folgende User haben getippt: ' . implode(', ', array_keys($this->players)));
 		$this->bot->queue('Die gezogenen Zahlen sind ' . implode(', ', $this->drawnNumbers));
 		foreach ($this->players as $player => $numbers) {
 			$reward = 0;
