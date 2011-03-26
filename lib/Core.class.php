@@ -115,15 +115,16 @@ class Core {
 	 * @return	string			module-address
 	 */
 	public static function loadModule($module) {
+		$module = ucfirst($module);
 		// handle loaded
 		if (isset(self::$modules[$module])) return self::log()->error = 'Tried to load module '.$module.' that is already loaded';
 		
 		// handle wrong name
-		if (!file_exists(DIR.'lib/Module'.ucfirst($module).'.class.php')) return self::log()->error = 'Tried to load module '.$module.' but there is no matching classfile';
+		if (!file_exists(DIR.'lib/Module'.$module.'.class.php')) return self::log()->error = 'Tried to load module '.$module.' but there is no matching classfile';
 		
 		// copy to prevent classname conflicts
 		$address = 'Module'.substr(StringUtil::getRandomID(), 0, 8);
-		$data = str_replace('class Module'.$module.' ',  "// Module is: ".$module."\nclass ".$address.' ', file_get_contents(DIR.'lib/Module'.ucfirst($module).'.class.php'));
+		$data = str_replace('class Module'.$module.' ',  "// Module is: ".$module."\nclass ".$address.' ', file_get_contents(DIR.'lib/Module'.$module.'.class.php'));
 		file_put_contents(DIR.'cache/'.$address.'.class.php', $data);
 
 #		exec('php -l '.escapeshellarg(DIR.'cache/'.$address.'.class.php'), $error, $code);
@@ -153,6 +154,7 @@ class Core {
 	 * @return	void
 	 */
 	public static function unloadModule($module) {
+		$module = ucfirst($module);
 		if (!isset(self::$modules[$module])) return self::log()->error = 'Tried to unload module '.$module.' that is not loaded';
 		$address = get_class(self::$modules[$module]);
 		unlink(DIR.'cache/'.$address.'.class.php');
