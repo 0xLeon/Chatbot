@@ -60,10 +60,11 @@ class ModuleLotto extends Module {
 	}
 
 	public function shoutWinners() {
+		asort($this->players);
+		asort($this->drawnNumbers);
+		
 		$this->bot->queue('Die Lottorunde ist vorbei! Folgende User haben getippt: ' . implode(', ', $this->players));
 		$this->bot->queue('Die gezogenen Zahlen sind ' . implode(', ', $this->drawnNumbers));
-		asort($this->players);
-		asort($this->numbers);
 		foreach ($this->players as $player => $numbers) {
 			$reward = 0;
 			asort($numbers);
@@ -74,7 +75,6 @@ class ModuleLotto extends Module {
 			}
 			$this->bot->queue($player . ': ' . implode(', ', $numbers) . ' - ' . $reward . ' eDönerGutscheine'); // maybe randomize currency?
 		}
-		$this->bot->queue('Eventuell können die Gutscheine irgendwannmal eingelöst werden :)');
 		$this->reset();
 	}
 
