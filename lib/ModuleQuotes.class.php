@@ -1,6 +1,8 @@
 <?php
 class ModuleQuotes extends Module {
 	protected $config = null;
+	protected $coolDown = array();
+
 	public function __construct() {
 		$this->config = new Config('quotes', array());
 		$this->config->write();
@@ -13,8 +15,11 @@ class ModuleQuotes extends Module {
 	public function handle(Bot $bot) {
 		if ($bot->message['id'] % 500 == 0) $this->config->write();
 		if ($bot->message['text'] == 'hat den Chat betreten' && $bot->message['type'] == 1) {
-			if (isset($this->config->config[$bot->lookUpUserID()])) {
-				$bot->queue('['.$bot->message['usernameraw'].'] '.substr($this->config->config[$bot->lookUpUserID()], 0, 250));
+			
+			$userID = $bot->lookUpUserID();
+			if (isset($this->config->config[$userID]) && (!isset($this->coolDown[$userID]) || ($this->coolDown[$userID] + 5 * 60) < time())) {
+				$bot->queue('['.$bot->message['usernameraw'].'] '.substr($this->config->config[$userID], 0, 250));
+				$this->coolDown[$userID] = time();
 			}
 		}
 		else if (substr(Module::removeWhisper($bot->message['text']), 0, 7) == '!quote ') {
