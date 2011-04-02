@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Main Bot class, handles messages
  *
@@ -342,13 +343,16 @@ class Bot {
 	 * @param	string	$message	message to add
 	 * @return	void
 	 */
-	public function queue($message) {
+	public function queue($message, $roomID = null) {
 		if (Core::config()->config['stfu']) return;
+		if ($roomID === null) {
+			$roomID = $this->message['roomID'];
+		}
 		
 		$data = '';
 		if (file_exists(DIR.'say')) {
 			$data = file_get_contents(DIR.'say')."\n";
 		}
-		file_put_contents(DIR.'say', $data.$message);
+		file_put_contents(DIR.'say', $data.$roomID.' '.$message);
 	}
 }

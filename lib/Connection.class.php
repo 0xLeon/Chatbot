@@ -77,6 +77,7 @@ class Connection {
 	 * @return	void
 	 */
 	public function __construct($url, $userID, $password = null, $salt = null, $cookiePassword = null, $cookiePrefix = 'wcf_') {
+		if (!defined('API_KEY')) define('API_KEY', '');
 		$this->url = parse_url($url);
 		if ($this->url === false) {
 			throw new Exception('Invalid URL');
@@ -203,11 +204,14 @@ class Connection {
 	 * @return	void
 	 */
 	public function postMessage($message) {
-		$this->url['query'] = 'form=Chat';
+		list($roomID, $message) = explode(' ', $message, 2);
+		$this->url['query'] = 'form=Chat'.(API_KEY != '' ? 'Bot' : ''); 
 		$this->request = array(
 			'text' => $message,
 			'enablesmilies' => 1,
-			'ajax' => 1
+			'ajax' => 1,
+			'room' => $roomID,
+			'key' => API_KEY
 		);
 		$this->setRequest(false);
 	}
@@ -219,7 +223,10 @@ class Connection {
 	 * @return	array<array>		json result
 	 */
 	public function readMessages($id) {
-		$this->url['query'] = 'page=ChatMessage&id='.$id;
+		$this->url['query'] = 'page=ChatMessage'.(API_KEY != '' ? 'Bot' : '').'&id='.$id;
+		$this->request = array(
+			'key' => API_KEY
+		);
 		$data = $this->setRequest();
 		$data = substr($data, stripos($data, '{"users'));
 		$data = substr($data, 0, strrpos($data, '}}')+2);
