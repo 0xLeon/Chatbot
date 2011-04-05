@@ -242,8 +242,8 @@ class Bot {
 						$this->denied();
 					}
 				}
-				else if (substr(Module::removeWhisper($this->message['text']), 0, 4) == '!level ') {
-					$data = trim(substr(Module::removeWhisper($this->message['text']), 4));
+				else if (substr(Module::removeWhisper($this->message['text']), 0, 7) == '!level ') {
+					$data = trim(substr(Module::removeWhisper($this->message['text']), 7));
 					$split = strrpos(' ');
 					$user = substr($data, 0, $split);
 					$level = substr($data, $split+1);
