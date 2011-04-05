@@ -62,6 +62,13 @@ class Bot {
 	 * @var integer
 	 */
 	public $messageCount = 0;
+	
+	/**
+	 * The number of messages the bot sent
+	 *
+	 * @var integer
+	 */
+	public $sendCount = 0;
 	public function __construct() {
 		$this->connection = new Connection(SERVER, ID, null, null, HASH);
 		$this->connection->getSecurityToken();
@@ -367,6 +374,7 @@ class Bot {
 	 */
 	public function queue($message, $roomID = null) {
 		if (Core::config()->config['stfu']) return;
+		$this->sendCount++;
 		if ($roomID === null) {
 			$roomID = $this->message['roomID'];
 		}

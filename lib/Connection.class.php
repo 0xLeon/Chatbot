@@ -213,6 +213,7 @@ class Connection {
 			'room' => $roomID,
 			'key' => API_KEY
 		);
+
 		$this->setRequest(false);
 	}
 	
