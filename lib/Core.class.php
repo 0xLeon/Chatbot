@@ -109,7 +109,7 @@ class Core {
 	}
 	
 	public static function compareLevel($userID, $level) {
-		return (isset(self::config()->config['level'][$userID]) && self::config()->config['level'][$userID] > $level);
+		return (isset(self::config()->config['levels'][$userID]) && self::config()->config['levels'][$userID] > $level);
 	}
 
 	/**
