@@ -13,12 +13,7 @@ class ModuleToys extends Module {
 			$bot->queue('/me verwandelt sich in Pacman und isst alle Punkte auf');
 		}
 
-		if ($bot->message['text'] == '!info') {
-			$bot->queue("Information:");
-			$bot->queue("Online seit: ".date('d.m.Y H:i:s', TIME));
-			$bot->queue("Gelesene Nachrichten: ".$bot->messageCount);
-		}
-		else if (Module::removeWhisper($bot->message['text']) == '!ping') {
+		if (Module::removeWhisper($bot->message['text']) == '!ping') {
 			$bot->queue('/whisper "'.$bot->message['usernameraw'].'" !pong');
 		}
 		else if (substr($bot->message['text'], 0, 5) == '!dice') {
