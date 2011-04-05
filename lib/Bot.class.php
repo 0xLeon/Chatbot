@@ -244,7 +244,7 @@ class Bot {
 				}
 				else if (substr(Module::removeWhisper($this->message['text']), 0, 7) == '!level ') {
 					$data = trim(substr(Module::removeWhisper($this->message['text']), 7));
-					$split = strrpos(' ');
+					$split = strrpos($data, ' ');
 					$user = substr($data, 0, $split);
 					$level = substr($data, $split+1);
 					if (Core::compareLevel($this->lookUpUserID(), 500)) {
