@@ -169,7 +169,7 @@ class Bot {
 				
 				// core commands
 				if (substr(Module::removeWhisper($this->message['text']), 0, 6) == '!load ') {
-					if (Core::isOp($this->lookUpUserID())) {
+					if (Core::compareLevel($this->lookUpUserID(), 500)) {
 						Core::log()->info = $this->message['usernameraw'].' loaded a module';
 						Core::loadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 5)));
 						$this->success();
@@ -179,7 +179,7 @@ class Bot {
 					}
 				}
 				else if (substr(Module::removeWhisper($this->message['text']), 0, 8) == '!unload ') {
-					if (Core::isOp($this->lookUpUserID())) {
+					if (Core::compareLevel($this->lookUpUserID(), 500)) {
 						Core::log()->info = $this->message['usernameraw'].' unloaded a module';
 						Core::unloadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 7)));
 						$this->success();
@@ -189,7 +189,7 @@ class Bot {
 					}
 				}
 				else if (substr(Module::removeWhisper($this->message['text']), 0, 8) == '!reload ') {
-					if (Core::isOp($this->lookUpUserID())) {
+					if (Core::compareLevel($this->lookUpUserID(), 500)) {
 						Core::log()->info = $this->message['usernameraw'].' reloaded a module';
 						Core::reloadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 7)));
 						$this->success();
@@ -198,13 +198,14 @@ class Bot {
 						$this->denied();
 					}
 				}
+				// fallback
 				else if (substr(Module::removeWhisper($this->message['text']), 0, 4) == '!op ') {
 					$user = trim(substr(Module::removeWhisper($this->message['text']), 4));
-					if (Core::isOp($this->lookUpUserID())) {
+					if (Core::compareLevel($this->lookUpUserID(), 500)) {
 						$userID = $this->lookUpUserID($user);
 						if ($userID) {
 							Core::log()->info = $this->message['usernameraw'].' opped '.$user;
-							Core::config()->config['op'][$userID] = $userID;
+							Core::config()->config['levels'][$userID] = 1;
 							Core::config()->write();
 							$this->success();
 						}
@@ -218,11 +219,32 @@ class Bot {
 				}
 				else if (substr(Module::removeWhisper($this->message['text']), 0, 6) == '!deop ') {
 					$user = trim(substr(Module::removeWhisper($this->message['text']), 6));
-					if (Core::isOp($this->lookUpUserID())) {
+					if (Core::compareLevel($this->lookUpUserID(), 500)) {
 						$userID = $this->lookUpUserID($user);
 						if ($userID) {
 							Core::log()->info = $this->message['usernameraw'].' deopped '.$user;
-							unset(Core::config()->config['op'][$userID]);
+							unset(Core::config()->config['levels'][$userID]);
+							Core::config()->write();
+							$this->success();
+						}
+						else {
+							$this->queue('/whisper "'.$this->message['usernameraw'].'" Konnte den Benutzer '.$user.' nicht finden');
+						}
+					}
+					else {
+						$this->denied();
+					}
+				}
+				else if (substr(Module::removeWhisper($this->message['text']), 0, 4) == '!level ') {
+					$data = trim(substr(Module::removeWhisper($this->message['text']), 4));
+					$split = strrpos(' ');
+					$user = substr($data, 0, $split);
+					$level = substr($data, $split+1);
+					if (Core::compareLevel($this->lookUpUserID(), 500)) {
+						$userID = $this->lookUpUserID($user);
+						if ($userID) {
+							Core::log()->info = $this->message['usernameraw'].' opped '.$user;
+							Core::config()->config['levels'][$userID] = $level;
 							Core::config()->write();
 							$this->success();
 						}
