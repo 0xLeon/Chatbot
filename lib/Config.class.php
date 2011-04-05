@@ -23,8 +23,8 @@ class Config {
 		'modules' => array(
 		
 		),
-		'op' => array(
-			ID => ID
+		'levels' => array(
+			ID => PHP_INT_MAX
 		),
 		'ignore' => array(
 		),

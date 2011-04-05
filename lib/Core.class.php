@@ -105,7 +105,11 @@ class Core {
 	}
 	
 	public static function isOp($userID) {
-		return isset(self::config()->config['op'][$userID]);
+		return self::compareLevel($userID, 1);
+	}
+	
+	public static compareLevel($userID, $level) {
+		return (isset(self::config()->config['level'][$userID]) && self::config()->config['level'][$userID] > $level);
 	}
 
 	/**
