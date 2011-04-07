@@ -28,6 +28,8 @@ class Core {
 	 */
 	private static $permission = null;
 	
+	private static $language = null;
+	
 	/**
 	 * Logger
 	 *
