@@ -30,7 +30,7 @@ class ModuleOp extends Module {
 		else if (Module::removeWhisper($bot->message['text']) == '!perms') {
 			if (!Core::compareLevel($bot->lookUpUserID(), 500)) return $bot->denied();
 			$perms = Core::permission()->getNodes();
-			asort($perms);
+			ksort($perms);
 			$permString = array();
 			foreach ($perms as $name => $level) {
 				$permString[] = $name.': '.$level;
