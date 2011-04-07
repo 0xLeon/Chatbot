@@ -384,7 +384,7 @@ class Bot {
 	 * @return void
 	 */
 	public function success() {
-		$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language->success);
+		$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->success);
 	}
 	
 	/**
@@ -393,7 +393,7 @@ class Bot {
 	 * @return void
 	 */
 	public function denied() {
-		$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language->access_denied);
+		$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->access_denied);
 		Core::log()->permission = $this->message['usernameraw'].' tried to use '.$this->message['text'];
 	}
 	
