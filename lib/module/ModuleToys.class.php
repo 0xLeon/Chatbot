@@ -8,7 +8,7 @@ class ModuleToys extends Module {
 
 	public function handle(Bot $bot) {
 		if (preg_match('~^\.\.\.+$~', $bot->message['text'])) {
-			$bot->queue('/me verwandelt sich in Pacman und isst alle Punkte auf');
+			$bot->queue('/me '.Core::language()->toys_pacman);
 		}
 
 		if (Module::removeWhisper($bot->message['text']) == '!ping') {
