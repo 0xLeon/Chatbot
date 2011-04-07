@@ -253,7 +253,7 @@ class Bot {
 							$this->success();
 						}
 						else {
-							$this->queue('/whisper "'.$this->message['usernameraw'].'" Konnte den Benutzer '.$user.' nicht finden');
+							$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language->get('user_not_found', array('{user}' => $user)));
 						}
 					}
 					else {
@@ -274,7 +274,7 @@ class Bot {
 							$this->success();
 						}
 						else {
-							$this->queue('/whisper "'.$this->message['usernameraw'].'" Konnte den Benutzer '.$user.' nicht finden');
+							$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language->get('user_not_found', array('{user}' => $user)));
 						}
 					}
 					else {
