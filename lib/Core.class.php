@@ -102,8 +102,8 @@ class Core {
 			// Is it a flag or a serial of flags? (prefixed with -)
 			if (substr($arg, 0, 1) == '-') {
 				for ($i = 1; isset($arg[$i]); $i++) {
-					if (isset($ret['flags'][$arg[$i]])) $ret['flags'][$arg[$i]++;
-					else $ret['flags'][$arg[$i] = 1;
+					if (isset($ret['flags'][$arg[$i]])) $ret['flags'][$arg[$i]]++;
+					else $ret['flags'][$arg[$i]] = 1;
 				}
 				continue;
 			}
