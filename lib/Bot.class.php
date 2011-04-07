@@ -176,7 +176,7 @@ class Bot {
 				
 				// core commands
 				if (substr(Module::removeWhisper($this->message['text']), 0, 6) == '!load ') {
-					if (Core::compareLevel($this->lookUpUserID(), 500)) {
+					if (Core::compareLevel($this->lookUpUserID(), 'op.load')) {
 						Core::log()->info = $this->message['usernameraw'].' loaded a module';
 						Core::loadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 5)));
 						$this->success();
@@ -186,7 +186,7 @@ class Bot {
 					}
 				}
 				else if (substr(Module::removeWhisper($this->message['text']), 0, 8) == '!unload ') {
-					if (Core::compareLevel($this->lookUpUserID(), 500)) {
+					if (Core::compareLevel($this->lookUpUserID(), 'op.load')) {
 						Core::log()->info = $this->message['usernameraw'].' unloaded a module';
 						Core::unloadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 7)));
 						$this->success();
@@ -196,7 +196,7 @@ class Bot {
 					}
 				}
 				else if (substr(Module::removeWhisper($this->message['text']), 0, 8) == '!reload ') {
-					if (Core::compareLevel($this->lookUpUserID(), 500)) {
+					if (Core::compareLevel($this->lookUpUserID(), 'op.load')) {
 						Core::log()->info = $this->message['usernameraw'].' reloaded a module';
 						Core::reloadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 7)));
 						$this->success();

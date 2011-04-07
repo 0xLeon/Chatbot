@@ -22,6 +22,13 @@ class Core {
 	private static $config = null;
 	
 	/**
+	 * Permission
+	 *
+	 * @var	Permission
+	 */
+	private static $permission = null;
+	
+	/**
 	 * Logger
 	 *
 	 * @var	Log
@@ -56,6 +63,7 @@ class Core {
 			self::log()->info = '...."Have you mooed today?"...';
 		}
 		self::$config = new Config();
+		self::$permission = new Permission();
 		if (VERBOSE > 0) self::log()->info = 'Loaded Config';
 		self::$bot = new Bot();
 		
@@ -164,6 +172,9 @@ class Core {
 	}
 
 	public static function compareLevel($userID, $level) {
+		if (!is_int($level)) {
+			$level = self::permission()->$level;
+		}
 		return (isset(self::config()->config['levels'][$userID]) && self::config()->config['levels'][$userID] >= $level);
 	}
 
@@ -185,9 +196,6 @@ class Core {
 		$address = 'Module'.substr(StringUtil::getRandomID(), 0, 8);
 		$data = str_replace('class Module'.$module.' ',  "// Module is: ".$module."\nclass ".$address.' ', file_get_contents(DIR.'lib/Module'.$module.'.class.php'));
 		file_put_contents(DIR.'cache/'.$address.'.class.php', $data);
-
-#		exec('php -l '.escapeshellarg(DIR.'cache/'.$address.'.class.php'), $error, $code);
-#		if ($code !== 0) return self::log()->error = 'Tried to load a module with syntax errors';
 
 		// now load
 		require_once(DIR.'cache/'.$address.'.class.php');
