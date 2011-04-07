@@ -198,7 +198,7 @@ class Core {
 		}
 		
 		// handle wrong name
-		if (!file_exists(DIR.'lib/Module'.$module.'.class.php')) {
+		if (!file_exists(DIR.'lib/module/Module'.$module.'.class.php')) {
 			self::log()->error = 'Tried to load module '.$module.' but there is no matching classfile';
 			
 			return self::NOT_FOUND;
