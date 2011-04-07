@@ -1,8 +1,6 @@
 <?php
 class ModuleToys extends Module {
-	public static $eight = array('Wenn Gott es will', 'Nein!', 'Ja!', 'Lass mich schlafen', 'Auf jeden Fall',
-		'Ich muss darüber nachdenken', 'Natürlich nicht', 'Frag morgen nochmal', 'Meine Glaskugel ist derzeit in Reparatur',
-		'Vielleicht', 'Hör auf! Hör auf! Hör auf!', 'Was war nochmal die Frage?');
+	public static $eight = 11;
 
 	public function destruct() {
 
@@ -38,8 +36,8 @@ class ModuleToys extends Module {
 			$data = str_split(substr(strtolower($bot->message['text']), 2));
 			$sum = 0;
 			foreach($data as $char) $sum += ord($char);
-			$send = self::$eight[$sum % count(self::$eight)];
-			$bot->queue('['.$bot->message['usernameraw'].'] '.$send);
+			$send = 'toys_eight_'.($sum % self::$eight);
+			$bot->queue('['.$bot->message['usernameraw'].'] '.Core::language()->$send);
 		}
 		else if (substr($bot->message['text'], 0, 5) == '!user') {
 			$text = str_split(substr(strtolower($bot->message['text']), 5));
