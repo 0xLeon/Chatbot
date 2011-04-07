@@ -46,7 +46,7 @@ class ModuleQuotes extends Module {
 			$bot->success();
 		}
 		else if (substr(Module::removeWhisper($bot->message['text']), 0, 11) == '!wipequote ') {
-			if (Core::isOp($bot->lookUpUserID())) {
+			if (Core::compareLevel($bot->lookUpUserID(), 'quote.wipe')) {
 				$username = substr(Module::removeWhisper($bot->message['text']), 11);
 				$userID = $bot->lookUpUserID($username);
 				if ($userID > 0) {

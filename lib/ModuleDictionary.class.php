@@ -18,7 +18,7 @@ class ModuleDictionary extends Module {
 			}
 		}
 		else if (substr(Module::removeWhisper($bot->message['text']), 0, 5) == '!dic ') {
-			if (Core::isOp($bot->lookUpUserID())) {
+			if (Core::compareLevel($bot->lookUpUserID(), 'dic.add')) {
 				$data = explode(' ', substr(Module::removeWhisper($bot->message['text']), 5), 2);
 				$this->config->config[$data[0]] = $data[1];
 				$bot->success();
@@ -28,7 +28,7 @@ class ModuleDictionary extends Module {
 			}
 		}
 		else if (substr(Module::removeWhisper($bot->message['text']), 0, 8) == '!deldic ') {
-			if (Core::isOp($bot->lookUpUserID())) {
+			if (Core::compareLevel($bot->lookUpUserID(), 'dic.add')) {
 				$data = substr(Module::removeWhisper($bot->message['text']), 8);
 				unset($this->config->config[$data]);
 				$bot->success();
@@ -38,7 +38,7 @@ class ModuleDictionary extends Module {
 			}
 		}
 		else if (Module::removeWhisper($bot->message['text']) == '!listdic') {
-			if (Core::isOp($bot->lookUpUserID())) {
+			if (Core::compareLevel($bot->lookUpUserID(), 'dic.add')) {
 				$entries = array_keys($this->config->config);
 				sort($entries);
 				$bot->queue('/whisper "'.$bot->message['usernameraw'].'" Gespeicherte Eintraege: '.implode(', ', $entries));
