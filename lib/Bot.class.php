@@ -137,7 +137,7 @@ class Bot {
 	 * @return void
 	 */
 	public function work() {
-		Core::log()->info = 'Initializing finished, forking';
+		if (VERBOSE > 0) Core::log()->info = 'Initializing finished, forking';
 		// register some functions
 		pcntl_signal(SIGTERM, array($this, 'signalHandler'));
 		pcntl_signal(SIGCHLD, array($this, 'signalHandler'));

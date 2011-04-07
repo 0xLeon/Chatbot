@@ -46,13 +46,22 @@ class Core {
 		self::init();
 		self::$log = new Log();
 		self::log()->info = 'Starting, PID is '.getmypid();
+		if (VERBOSE > 5) {
+			self::log()->info = '         (__) ';
+			self::log()->info = '         (oo) ';
+			self::log()->info = '   /------\/ ';
+			self::log()->info = '  / |    ||   ';
+			self::log()->info = ' *  /\---/\ ';
+			self::log()->info = '    ~~   ~~   ';
+			self::log()->info = '...."Have you mooed today?"...';
+		}
 		self::$config = new Config();
-		self::log()->info = 'Loaded Config';
+		if (VERBOSE > 0) self::log()->info = 'Loaded Config';
 		self::$bot = new Bot();
 		
 		$modules = self::config()->config['modules'];
 		// load default modules
-		self::log()->info = 'Loading Modules';
+		if (VERBOSE > 0) self::log()->info = 'Loading Modules';
 		foreach ($modules as $module) {
 			self::loadModule($module);
 		}
@@ -129,23 +138,23 @@ class Core {
 		
 		// send leave message
 		self::$bot->getConnection()->leave();
-		self::$log->info = 'Left chat';
+		if (VERBOSE > 0) self::$log->info = 'Left chat';
 		// write the configs
 		self::$config->write();
-		self::$log->info = 'Written config';
+		if (VERBOSE > 0) self::$log->info = 'Written config';
 		
 		// call destructors of modules
 		foreach (self::$modules as $module) {
 			$module->destruct();
 		}
-		self::$log->info = 'Unloading modules';
+		if (VERBOSE > 0) self::$log->info = 'Unloading modules';
 		
 		// clear class cache
 		$files = glob(DIR.'cache/*.class.php');
 		foreach ($files as $file) {
 			unlink($file);
 		}
-		self::$log->info = 'Cleaned cache';
+		if (VERBOSE > 0) self::$log->info = 'Cleaned cache';
 		unlink(DIR.'config/bot.pid');
 	}
 	
