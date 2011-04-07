@@ -49,6 +49,11 @@ class Core {
 	 */
 	private static $modules = array();
 	
+	const ALREADY_LOADED = 1;
+	const NOT_LOADED = 2;
+	const NOT_FOUND = 3;
+	const NO_MODULE = 4;
+	
 	private function __construct() {
 		self::init();
 		self::$log = new Log();
@@ -187,10 +192,17 @@ class Core {
 	public static function loadModule($module) {
 		$module = ucfirst($module);
 		// handle loaded
-		if (isset(self::$modules[$module])) return self::log()->error = 'Tried to load module '.$module.' that is already loaded';
+		if (isset(self::$modules[$module])) {
+			self::log()->error = 'Tried to load module '.$module.' that is already loaded';
+			return self::ALREADY_LOADED;
+		}
 		
 		// handle wrong name
-		if (!file_exists(DIR.'lib/Module'.$module.'.class.php')) return self::log()->error = 'Tried to load module '.$module.' but there is no matching classfile';
+		if (!file_exists(DIR.'lib/Module'.$module.'.class.php')) {
+			self::log()->error = 'Tried to load module '.$module.' but there is no matching classfile';
+			
+			return self::NOT_FOUND;
+		}
 		
 		// copy to prevent classname conflicts
 		$address = 'Module'.substr(StringUtil::getRandomID(), 0, 8);
@@ -204,7 +216,8 @@ class Core {
 		// check whether it is really a module
 		if (!self::$modules[$module] instanceof Module) {
 			self::log()->error = 'Tried to load Module '.$module.' but it is no module, unloading';
-			return self::unloadModule($module);
+			self::unloadModule($module);
+			return self::NO_MODULE;
 		}
 		
 		self::config()->config['modules'][$module] = $module;
@@ -222,12 +235,16 @@ class Core {
 	 */
 	public static function unloadModule($module) {
 		$module = ucfirst($module);
-		if (!isset(self::$modules[$module])) return self::log()->error = 'Tried to unload module '.$module.' that is not loaded';
+		if (!isset(self::$modules[$module])) {
+			self::log()->error = 'Tried to unload module '.$module.' that is not loaded';
+
+			return self::NOT_LOADED;
+		}
 		$address = get_class(self::$modules[$module]);
-		unlink(DIR.'cache/'.$address.'.class.php');
 		
 		self::$modules[$module]->destruct();
 		
+		unlink(DIR.'cache/'.$address.'.class.php');
 		unset(self::$modules[$module]);
 		unset(self::config()->config['modules'][$module]);
 		self::config()->write();
