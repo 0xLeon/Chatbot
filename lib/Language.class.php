@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Parses language-files
+ *
+ * @author	Tim Düsterhus
+ * @copyright	2010 - 2011 Tim Düsterhus
+ */
 class Language {
 	protected $items = array();
 	
@@ -11,10 +16,15 @@ class Language {
 		$this->items = parse_ini_file(DIR.'language/'.$languageCode.'.lng');
 	}
 	
-	public function __get($name, Array $vars = array()) {
+	public function __get($name) {
+		return $this->get($name);
+	}
+	
+	public function get($name, Array $vars = array()) {
 		if (isset($this->items[$name])) {
-			return str_replace(array_keys($vars), array_values($vars), $this->items[$name]);
+				return str_replace(array_keys($vars), array_values($vars), $this->items[$name]);
+			}
+			return '';
 		}
-		return '';
 	}
 }

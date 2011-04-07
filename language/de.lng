@@ -1,1 +1,9 @@
 ; German language
+
+module_error_1 = Dieses Modul ist bereits geladen
+module_error_2 = Dieses Modul ist nicht geladen
+module_error_3 = Dieses Modul konnte nicht gefunden werden
+module_error_4 = Dieses Modul ist kein gültiges Modul
+
+success = Der Befehl wurde erfolgreich ausgeführt
+access_denied = Zugriff verweigert

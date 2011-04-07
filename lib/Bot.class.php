@@ -178,8 +178,14 @@ class Bot {
 				if (substr(Module::removeWhisper($this->message['text']), 0, 6) == '!load ') {
 					if (Core::compareLevel($this->lookUpUserID(), 'op.load')) {
 						Core::log()->info = $this->message['usernameraw'].' loaded a module';
-						Core::loadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 5)));
-						$this->success();
+						$result = Core::loadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 5)));
+						if (!is_int($result)) {
+							$this->success();
+						}
+						else {
+							$name = 'module_error_'.$result;
+							$bot->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->$name);
+						}
 					}
 					else {
 						$this->denied();
@@ -189,7 +195,13 @@ class Bot {
 					if (Core::compareLevel($this->lookUpUserID(), 'op.load')) {
 						Core::log()->info = $this->message['usernameraw'].' unloaded a module';
 						Core::unloadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 7)));
-						$this->success();
+						if (!is_int($result)) {
+							$this->success();
+						}
+						else {
+							$name = 'module_error_'.$result;
+							$bot->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->$name);
+						}
 					}
 					else {
 						$this->denied();
@@ -366,7 +378,7 @@ class Bot {
 	 * @return void
 	 */
 	public function success() {
-		$this->queue('/whisper "'.$this->message['usernameraw'].'" Der Befehl wurde erfolgreich ausgeführt');
+		$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language->success);
 	}
 	
 	/**
@@ -375,7 +387,7 @@ class Bot {
 	 * @return void
 	 */
 	public function denied() {
-		$this->queue('/whisper "'.$this->message['usernameraw'].'" Zugriff verweigert');
+		$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language->access_denied);
 		Core::log()->permission = $this->message['usernameraw'].' tried to use '.$this->message['text'];
 	}
 	

@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Provides permission handling
+ *
+ * @author	Tim Düsterhus
+ * @copyright	2010 - 2011 Tim Düsterhus
+ */
 class Permission {
 	/**
 	 * The config
