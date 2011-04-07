@@ -68,6 +68,51 @@ class Core {
 		if (!file_exists(DIR.'log/')) mkdir(DIR.'log/', 0777);
 		if (!file_exists(DIR.'cache/')) mkdir(DIR.'cache/', 0777);
 		if (!file_exists(DIR.'config/')) mkdir(DIR.'config/', 0777);
+		
+		$args = self::parseArgs($argv);
+		define('VERBOSE', ((isset($args['flags']['v'])) ? $args['flags']['v'] : 0));
+	}
+	
+	protected static function parseArgs($args){
+		$ret = array(
+			'exec'      => '',
+			'options'   => array(),
+			'flags'     => array(),
+			'arguments' => array(),
+		);
+
+		$ret['exec'] = array_shift($args);
+
+		while (($arg = array_shift($args)) !== null) {
+			// Is it a option? (prefixed with --)
+			if (substr($arg, 0, 2) === '--') {
+				$option = substr($arg, 2);
+
+				// is it the syntax '--option=argument'?
+				if (strpos($option, '=') !== false) {
+					array_push($ret['options'], explode('=', $option, 2) );
+				}
+				else {
+					array_push($ret['options'], $option);
+				}
+				
+				continue;
+			}
+
+			// Is it a flag or a serial of flags? (prefixed with -)
+			if (substr($arg, 0, 1) == '-') {
+				for ($i = 1; isset($arg[$i]); $i++) {
+					if (isset($ret['flags'][$arg[$i]])) $ret['flags'][$arg[$i]++;
+					else $ret['flags'][$arg[$i] = 1;
+				}
+				continue;
+			}
+
+			// finally, it is not option, nor flag
+			$ret['arguments'][] = $arg;
+			continue;
+		}
+		return $ret;
 	}
 	
 	/**
