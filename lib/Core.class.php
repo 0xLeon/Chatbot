@@ -151,16 +151,20 @@ class Core {
 		if (VERBOSE > 0) self::$log->info = 'Unloading modules';
 		
 		// clear class cache
-		$files = glob(DIR.'cache/*.class.php');
+		$files = glob(DIR.'cache/*');
 		foreach ($files as $file) {
 			unlink($file);
 		}
 		if (VERBOSE > 0) self::$log->info = 'Cleaned cache';
-		unlink(DIR.'config/bot.pid');
+		unlink(DIR.'bot.pid');
 	}
 	
 	public static function isOp($userID) {
-		return isset(self::config()->config['op'][$userID]);
+		return self::compareLevel($userID, 1);
+	}
+
+	public static function compareLevel($userID, $level) {
+		return (isset(self::config()->config['levels'][$userID]) && self::config()->config['levels'][$userID] >= $level);
 	}
 
 	/**

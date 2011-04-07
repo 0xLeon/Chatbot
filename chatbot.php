@@ -17,7 +17,7 @@ require_once(DIR.'config/userdata.php');
 define('TIME', time());
 
 // write pidfile
-file_put_contents(DIR.'config/bot.pid', getmypid());
+file_put_contents(DIR.'bot.pid', getmypid());
 
 function __autoload($class) {
 	require_once(DIR.'lib/'.$class.'.class.php');
