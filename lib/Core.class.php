@@ -210,7 +210,7 @@ class Core {
 		
 		// copy to prevent classname conflicts
 		$address = 'Module'.substr(StringUtil::getRandomID(), 0, 8);
-		$data = str_replace('class Module'.$module.' ',  "// Module is: ".$module."\nclass ".$address.' ', file_get_contents(DIR.'lib/Module'.$module.'.class.php'));
+		$data = str_replace('class Module'.$module.' ',  "// Module is: ".$module."\nclass ".$address.' ', file_get_contents(DIR.'lib/module/Module'.$module.'.class.php'));
 		file_put_contents(DIR.'cache/'.$address.'.class.php', $data);
 
 		// now load
