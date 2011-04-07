@@ -7,3 +7,5 @@ module_error_4 = Dieses Modul ist kein gültiges Modul
 
 success = Der Befehl wurde erfolgreich ausgeführt
 access_denied = Zugriff verweigert
+
+user_not_found = Konnte den Benutzer {user} nicht finden

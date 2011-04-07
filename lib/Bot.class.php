@@ -210,8 +210,14 @@ class Bot {
 				else if (substr(Module::removeWhisper($this->message['text']), 0, 8) == '!reload ') {
 					if (Core::compareLevel($this->lookUpUserID(), 'op.load')) {
 						Core::log()->info = $this->message['usernameraw'].' reloaded a module';
-						Core::reloadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 7)));
-						$this->success();
+						$result = Core::reloadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 7)));
+						if (!is_int($result)) {
+							$this->success();
+						}
+						else {
+							$name = 'module_error_'.$result;
+							$bot->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->$name);
+						}
 					}
 					else {
 						$this->denied();
@@ -229,7 +235,7 @@ class Bot {
 							$this->success();
 						}
 						else {
-							$this->queue('/whisper "'.$this->message['usernameraw'].'" Konnte den Benutzer '.$user.' nicht finden');
+							$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language->get('user_not_found', array('{user}' => $user)));
 						}
 					}
 					else {

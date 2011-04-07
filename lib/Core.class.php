@@ -252,6 +252,8 @@ class Core {
 		self::config()->write();
 		
 		self::log()->info = 'Unloaded module '.$module.' @ '.$address;
+		
+		return $module;
 	}
 	
 	/**
@@ -262,7 +264,7 @@ class Core {
 	 */
 	public static function reloadModule($module) {
 		self::unloadModule($module);
-		self::loadModule($module);
+		return self::loadModule($module);
 	}
 	
 	/**
