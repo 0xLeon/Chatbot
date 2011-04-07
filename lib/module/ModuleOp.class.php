@@ -20,7 +20,7 @@ class ModuleOp extends Module {
 		}
 		else if (Module::removeWhisper($bot->message['text']) == '!loaded') {
 			if (!Core::compareLevel($bot->lookUpUserID(), 'op.load')) return $bot->denied();
-			$bot->queue('/whisper "'.$bot->message['usernameraw'].'" Folgende Module sind geladen: '.implode(', ', array_keys(Core::getModules())));
+			$bot->queue('/whisper "'.$bot->message['usernameraw'].'" '.Core::language()->op_loaded.': '.implode(', ', array_keys(Core::getModules())));
 		}
 		else if (substr(Module::removeWhisper($bot->message['text']), 0, 6) == '!join ') {
 			if (!Core::compareLevel($bot->lookUpUserID(), 'op.join')) return $bot->denied();
@@ -34,7 +34,7 @@ class ModuleOp extends Module {
 			foreach ($rooms as $id => $name) {
 				$roomString[] = $name.': '.$id;
 			}
-			$bot->queue('/whisper "'.$bot->message['usernameraw'].'" Folgende Räume sind verfügbar: '.implode(', ', $roomString));
+			$bot->queue('/whisper "'.$bot->message['usernameraw'].'" '.Core::language()->op_rooms.': '.implode(', ', $roomString));
 		}
 	}
 }

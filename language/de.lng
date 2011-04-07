@@ -9,3 +9,10 @@ success = Der Befehl wurde erfolgreich ausgeführt
 access_denied = Zugriff verweigert
 
 user_not_found = Konnte den Benutzer {user} nicht finden
+
+antispam_no_caps = Bitte unterlasse es zu capsen
+
+dic_listdic = Gespeicherte Einträge
+
+op_loaded = Folgende Module sind geladen
+op_rooms = Folgende Räume sind verfügbar

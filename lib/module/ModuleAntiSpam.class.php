@@ -44,7 +44,7 @@ class ModuleAntiSpam extends Module implements AlwaysFire {
 		if (strlen($message) < 6 || ($capscount / $charcount * 100) < $this->config->config['capspercent']) return;
 		
 		$this->caps[$bot->message['usernameraw']]['counter']++;
-		$bot->queue('/whisper "'.$bot->message['usernameraw'].'" Bitte unterlasse es zu capsen');
+		$bot->queue('/whisper "'.$bot->message['usernameraw'].'" '.Core::language()->antispam_no_caps);
 		if ($this->caps[$bot->message['usernameraw']]['counter'] > 2) {
 			$this->caps[$bot->message['usernameraw']]['counter'] = 0;
 			$bot->queue('/tmute '.$bot->message['usernameraw'].' '.pow(2, $this->caps[$bot->message['usernameraw']]['kills']++));
