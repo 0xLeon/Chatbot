@@ -34,7 +34,7 @@ class ModuleQuotes extends Module {
 				}
 			}
 			else {
-				$bot->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language->get('user_not_found', array('{user}' => $username)));
+				$bot->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->get('user_not_found', array('{user}' => $username)));
 			}
 		}
 		else if (substr(Module::removeWhisper($bot->message['text']), 0, 10) == '!setquote ') {
@@ -54,7 +54,7 @@ class ModuleQuotes extends Module {
 					$bot->success();
 				}
 				else {
-					$bot->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language->get('user_not_found', array('{user}' => $username)));
+					$bot->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->get('user_not_found', array('{user}' => $username)));
 				}
 			}
 			else {
