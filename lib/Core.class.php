@@ -74,6 +74,7 @@ class Core {
 	 * @return	void
 	 */
 	protected static function init() {
+		global $argv;
 		if (!file_exists(DIR.'log/')) mkdir(DIR.'log/', 0777);
 		if (!file_exists(DIR.'cache/')) mkdir(DIR.'cache/', 0777);
 		if (!file_exists(DIR.'config/')) mkdir(DIR.'config/', 0777);
