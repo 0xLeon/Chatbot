@@ -263,6 +263,19 @@ class Bot {
 						$this->denied();
 					}
 				}
+				else if (substr(Module::removeWhisper($bot->message['text']), 0, 6) == '!perm ') {
+					$data = trim(substr(Module::removeWhisper($this->message['text']), 6));
+					$split = strrpos($data, ' ');
+					$node = substr($data, 0, $split);
+					$level = substr($data, $split+1);
+					if (Core::compareLevel($this->lookUpUserID(), 500)) {
+						Core::permission()->$node = $level;
+						$this->success();
+					}
+					else {
+						$this->denied();
+					}
+				}
 				else {
 					// handle the modules
 					$modules = Core::getModules();

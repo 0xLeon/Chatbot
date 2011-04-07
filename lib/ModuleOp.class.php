@@ -4,15 +4,7 @@ class ModuleOp extends Module {
 
 	}
 	public function handle(Bot $bot) {
-		if (substr(Module::removeWhisper($bot->message['text']), 0, 6) == '!perm ') {
-			if (!Core::compareLevel($bot->lookUpUserID(), 500)) return $bot->denied();
-			$data = trim(substr(Module::removeWhisper($this->message['text']), 6));
-			$split = strrpos($data, ' ');
-			$node = substr($data, 0, $split);
-			$level = substr($data, $split+1);
-			Core::permission()->$node = $level;
-		}
-		else if (Module::removeWhisper($bot->message['text']) == '!shutdown') {
+		if (Module::removeWhisper($bot->message['text']) == '!shutdown') {
 			if (!Core::compareLevel($bot->lookUpUserID(), 'op.shutdown')) return $bot->denied();
 			Core::log()->info = $bot->message['usernameraw'].' shutted the bot down';
 			$bot->shutdown();
