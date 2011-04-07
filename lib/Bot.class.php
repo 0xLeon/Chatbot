@@ -184,7 +184,7 @@ class Bot {
 						}
 						else {
 							$name = 'module_error_'.$result;
-							$bot->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->$name);
+							$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->$name);
 						}
 					}
 					else {
@@ -200,7 +200,7 @@ class Bot {
 						}
 						else {
 							$name = 'module_error_'.$result;
-							$bot->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->$name);
+							$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->$name);
 						}
 					}
 					else {
@@ -216,7 +216,7 @@ class Bot {
 						}
 						else {
 							$name = 'module_error_'.$result;
-							$bot->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->$name);
+							$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->$name);
 						}
 					}
 					else {
