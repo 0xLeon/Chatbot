@@ -18,3 +18,8 @@ op_loaded = Folgende Module sind geladen
 op_rooms = Folgende Räume sind verfügbar
 
 quotes_noquote = Der Benutzer hat kein Zitat
+
+util_information = Status
+util_since = Online seit
+util_sent = Geschriebene Nachrichten
+util_got = Gelesene Nachrichten
