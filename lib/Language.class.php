@@ -22,9 +22,8 @@ class Language {
 	
 	public function get($name, Array $vars = array()) {
 		if (isset($this->items[$name])) {
-				return str_replace(array_keys($vars), array_values($vars), $this->items[$name]);
-			}
-			return '';
+			return str_replace(array_keys($vars), array_values($vars), $this->items[$name]);
 		}
+		return '';
 	}
 }
