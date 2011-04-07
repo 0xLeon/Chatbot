@@ -27,6 +27,15 @@ class ModuleOp extends Module {
 			$bot->getConnection()->join(substr(Module::removeWhisper($bot->message['text']), 6));
 			$bot->success();
 		}
+		else if (Module::removeWhisper($bot->message['text']) == '!perms') {
+			if (!Core::compareLevel($bot->lookUpUserID(), 500)) return $bot->denied();
+			$perms = Core::permission()->getNodes();
+			$permString = array();
+			foreach ($perms as $id => $name) {
+				$permString[] = $name.': '.$id;
+			}
+			$bot->queue('/whisper "'.$bot->message['usernameraw'].'" '.Core::language()->op_perms.': '.implode(', ', $roomString));
+		}
 		else if (Module::removeWhisper($bot->message['text']) == '!rooms') {
 			if (!Core::compareLevel($bot->lookUpUserID(), 'op.join')) return $bot->denied();
 			$rooms = $bot->getConnection()->getRooms();

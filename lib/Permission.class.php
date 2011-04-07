@@ -26,4 +26,7 @@ class Permission {
 		$this->config->config[$name] = intval($value);
 		$this->config->write();
 	}
+	public function getNodes() {
+		return $this->config->config;
+	}
 }
