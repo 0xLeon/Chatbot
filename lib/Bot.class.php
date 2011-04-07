@@ -263,7 +263,7 @@ class Bot {
 						$this->denied();
 					}
 				}
-				else if (substr(Module::removeWhisper($bot->message['text']), 0, 6) == '!perm ') {
+				else if (substr(Module::removeWhisper($this->message['text']), 0, 6) == '!perm ') {
 					$data = trim(substr(Module::removeWhisper($this->message['text']), 6));
 					$split = strrpos($data, ' ');
 					$node = substr($data, 0, $split);
