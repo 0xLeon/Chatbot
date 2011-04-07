@@ -30,7 +30,7 @@ class ModuleQuotes extends Module {
 					$bot->queue('/whisper "'.$bot->message['usernameraw'].'" ['.$username.'] '.$this->config->config[$userID]);
 				}
 				else {
-					$bot->queue('/whisper "'.$bot->message['usernameraw'].'" Der Benutzer hat kein Zitat');
+					$bot->queue('/whisper "'.$bot->message['usernameraw'].'" '.Core::language()->quotes_noquote);
 				}
 			}
 			else {
