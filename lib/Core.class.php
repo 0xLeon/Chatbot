@@ -69,6 +69,7 @@ class Core {
 		}
 		self::$config = new Config();
 		self::$permission = new Permission();
+		self::$language = new Language(LANGUAGE);
 		if (VERBOSE > 0) self::log()->info = 'Loaded Config';
 		self::$bot = new Bot();
 		
@@ -94,6 +95,7 @@ class Core {
 		
 		$args = self::parseArgs($argv);
 		define('VERBOSE', ((isset($args['flags']['v'])) ? $args['flags']['v'] : 0));
+		define('LANGUAGE', ((isset($args['options']['language'])) ? $args['options']['language'] : 'de'));
 	}
 	
 	protected static function parseArgs($args){
