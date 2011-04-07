@@ -1,6 +1,6 @@
 <?php
 class ModuleToys extends Module {
-	public static $eight = 11;
+	public static $eight = 12;
 
 	public function destruct() {
 
