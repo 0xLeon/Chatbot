@@ -175,7 +175,7 @@ class Core {
 		if (!is_int($level)) {
 			$level = self::permission()->$level;
 		}
-		return (isset(self::config()->config['levels'][$userID]) && self::config()->config['levels'][$userID] >= $level);
+		return ((!isset(self::config()->config['levels'][$userID]) && $level == 0) || (isset(self::config()->config['levels'][$userID]) && self::config()->config['levels'][$userID] >= $level));
 	}
 
 	/**
