@@ -15,7 +15,7 @@ class ModuleOp extends Module {
                         $bot->shutdown(SIGUSR1);
 		}
 		else if (substr(Module::removeWhisper($bot->message['text']), 0, 5) == '!say ') {
-			if (!Core::compareLevel($bot->lookUpUserID(), 'op.say')) return $bot->denied();
+			if (!Core::compareLevel($bot->lookUpUserID(), 500)) return $bot->denied();
 			$bot->queue(substr(Module::removeWhisper($bot->message['text']), 5));
 		}
 		else if (Module::removeWhisper($bot->message['text']) == '!loaded') {
