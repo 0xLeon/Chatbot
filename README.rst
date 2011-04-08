@@ -45,7 +45,7 @@ yourself Operator privilegies (OP). You can do it by creating a file called say
 in the directory of the chatbot.php. The say-file must have the following
 content::
     
-	!op YourUsername
+	!level YourUsername 500
 	
 The bot will post that message in the Chat and afterwards grants you OP. The
 say-file will be deleted after posting. From now on you can configure it fully
