@@ -1,0 +1,40 @@
+; English language
+
+module_error_1 = This module is already loaded
+module_error_2 = This module is not loaded
+module_error_3 = The module cannot be found
+module_error_4 = The module is invalid
+
+success = The command was successfully executed
+access_denied = Permission denied
+
+user_not_found = Could not find the {user}
+
+antispam_no_caps = Please don't caps
+
+dic_listdic = Saved entries
+
+op_loaded = The following modules are loaded
+op_rooms = The following rooms are available
+op_perms = These permissions are set
+
+quotes_noquote = The user has got no quotes
+
+util_information = Status
+util_since = Online since
+util_sent = Sent messages
+util_got = Read messages
+
+toys_eight_0 = If god wishes
+toys_eight_1 = No
+toys_eight_2 = Yes
+toys_eight_3 = Please let me sleep
+toys_eight_4 = Sure
+toys_eight_5 = I have to think about it
+toys_eight_6 = Of course not
+toys_eight_7 = Ask tommorow again
+toys_eight_8 = My glass ball is currently not available
+toys_eight_9 = Maybe
+toys_eight_10 = Stop it, Stop it, Stop it
+toys_eight_11 = What was the question again?
+toys_pacman = evolves into pacman and eats up all the dots
