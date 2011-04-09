@@ -154,15 +154,18 @@ class Bot {
 				
 				if ($this->child === 0) {
 					// child process
-					return self::child();
+					return $this->child();
 				}
 				else {
 					Core::log()->info = 'Child is: '.$this->child;
 				}
 			}
+			
 			// read messages
-			$this->data = Bot::read();
+			$this->read();
+			$this->parseSTDIN();
 			if (!is_array($this->data['messages'])) continue;
+
 			$this->messageCount += count($this->data['messages']);
 			foreach($this->data['messages'] as $this->message) {
 				// remove crap
@@ -350,7 +353,7 @@ class Bot {
 	/**
 	 * Reads the messages and parses the output
 	 *
-	 * @return array<array>	See Bot::$data
+	 * @return void
 	 */
 	public function read() {
 		$data = $this->getConnection()->readMessages($this->id);
@@ -359,7 +362,7 @@ class Bot {
 			$id = end($data['messages']);
 			$this->id = $id['id'];
 		}
-		return $data;
+		$this->data = $data;
 	}
 	
 	/**
@@ -415,5 +418,14 @@ class Bot {
 			$data = file_get_contents(DIR.'say')."\n";
 		}
 		file_put_contents(DIR.'say', $data.$roomID.' '.$message);
+	}
+	
+	public function parseSTDIN() {
+		$read[] = STDIN;
+		stream_select($read, $write = null, $except = null, $tv = 0);
+		if (count($read)) {
+			$data = @fread(STDIN, 1500);
+			$this->data['messages'][] = array('text' => $data);
+		}
 	}
 }
