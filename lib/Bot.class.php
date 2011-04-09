@@ -197,7 +197,7 @@ class Bot {
 				else if (substr(Module::removeWhisper($this->message['text']), 0, 8) == '!unload ') {
 					if (Core::compareLevel($this->lookUpUserID(), 'op.load')) {
 						Core::log()->info = $this->message['usernameraw'].' unloaded a module';
-						Core::unloadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 7)));
+						$result = Core::unloadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 7)));
 						if (!is_int($result)) {
 							$this->success();
 						}
