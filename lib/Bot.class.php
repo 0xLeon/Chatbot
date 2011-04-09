@@ -302,6 +302,7 @@ class Bot {
 					$modules = Core::getModules();
 					foreach ($modules as $module) {
 						$userID = $this->lookUpUserID($this->message['usernameraw']);
+
 						if (($module instanceof AlwaysFire) || !isset(Core::config()->config['ignore'][$userID])) {
 							$module->handle($this);
 						}
@@ -428,6 +429,7 @@ class Bot {
 		stream_select($read, $write, $except, $tv);
 		if (count($read)) {
 			$data = @fread(STDIN, 1500);
+			$data = str_replace(array("\r", "\n"), '', $data),
 			$this->data['messages'][] = array('id' => 500, 'usernameraw' => NAME, 'username' => NAME, 'text' => $data, 'type' => 0, 'roomID' => 0);
 		}
 	}
