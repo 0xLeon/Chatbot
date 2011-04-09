@@ -429,7 +429,7 @@ class Bot {
 		stream_select($read, $write, $except, $tv);
 		if (count($read)) {
 			$data = @fread(STDIN, 1500);
-			$data = str_replace(array("\r", "\n"), '', $data),
+			$data = trim(str_replace(array("\r", "\n"), '', $data)),
 			$this->data['messages'][] = array('id' => 500, 'usernameraw' => NAME, 'username' => NAME, 'text' => $data, 'type' => 0, 'roomID' => 0);
 		}
 	}
