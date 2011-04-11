@@ -13,7 +13,7 @@ class Connection {
 	 *
 	 * @var string
 	 */
-	const USERAGENT = 'PHP - Chatbot v2.0.0 - Jetzt noch besser :D';
+	const USERAGENT = 'PHP/'.phpversion().' ('.php_uname('s').' '.php_uname('r').') Chatbot/2.0';
 
 	/**
 	 * The URL of the WCF to access
