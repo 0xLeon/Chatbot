@@ -1,4 +1,5 @@
 <?php
+define('USERAGENT', 'PHP/'.phpversion().' ('.php_uname('s').' '.php_uname('r').') Chatbot/2.0');
 /**
  * WCFApi provides methods to externally access a WCF
  * 
@@ -7,13 +8,6 @@
  * @licence	GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
 class Connection {
-
-	/**
-	 * Useragent to send
-	 *
-	 * @var string
-	 */
-	const USERAGENT = 'PHP/'.phpversion().' ('.php_uname('s').' '.php_uname('r').') Chatbot/2.0';
 
 	/**
 	 * The URL of the WCF to access
@@ -135,7 +129,7 @@ class Connection {
 		fputs($fp, "POST ".$this->url['path'].((!empty($this->url['query'])) ? '?'.$this->url['query'] : '')." HTTP/1.1\r\n");
 		fputs($fp, "Host: ".$this->url['host']."\r\n");
 		fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n");
-		fputs($fp, "User-Agent: ".self::USERAGENT."\r\n");
+		fputs($fp, "User-Agent: ".USERAGENT."\r\n");
 		fputs($fp, "Content-length: ".strlen($request)."\r\n");
 		fputs($fp, "Cookie: ".$this->cookiePrefix."userID=".$this->userID."; ".$this->cookiePrefix."password=".$this->cookiePassword.(($this->sessionID != '') ? "; ".$this->cookiePrefix."cookieHash=".$this->sessionID : '')."\r\n");
 		fputs($fp, "Connection: close\r\n\r\n");
