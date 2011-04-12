@@ -28,6 +28,8 @@ util_since = Online since
 util_sent = Sent messages
 util_got = Read messages
 
+google_number = Existimated {number} results
+
 toys_eight_0 = If god wishes
 toys_eight_1 = No
 toys_eight_2 = Yes

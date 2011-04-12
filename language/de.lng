@@ -28,16 +28,18 @@ util_since = Online seit
 util_sent = Geschriebene Nachrichten
 util_got = Gelesene Nachrichten
 
+google_number = UngefÃ¤hr {number} Ergebnisse
+
 toys_eight_0 = Wenn Gott es will
 toys_eight_1 = Nein
 toys_eight_2 = Ja
 toys_eight_3 = Lass mich schlafen
 toys_eight_4 = Auf jeden Fall
-toys_eight_5 = Ich muss darüber nachdenken
-toys_eight_6 = Natürlich nicht
+toys_eight_5 = Ich muss darÃ¼ber nachdenken
+toys_eight_6 = NatÃ¼rlich nicht
 toys_eight_7 = Frag morgen nochmal
 toys_eight_8 = Meine Glaskugel ist derzeit in Reparatur
 toys_eight_9 = Vielleicht
-toys_eight_10 = Hör auf, Hör auf, Hör auf
+toys_eight_10 = HÃ¶r auf, HÃ¶r auf, HÃ¶r auf
 toys_eight_11 = Was war nochmal die Frage?
 toys_pacman = verwandelt sich in Pacman und isst alle Punkte auf
