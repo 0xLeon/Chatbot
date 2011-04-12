@@ -10,8 +10,8 @@ class ModuleGoogle extends Module {
 		if ($bot->message['usernameraw'] == NAME) return;
 		if (substr($bot->message['text'], 0, 8) == '!google ') {
 			$data = $this->search(substr($bot->message['text'], 8));
-			Bot::queue('Google ['.substr($bot->message['text'], 8).']: http://google.de/search?q='.rawurlencode(substr($bot->message, 8)).' Ungefähr '.number_format($data['responseData']['cursor']['estimatedResultCount'], 0, Core::language()->decimal_point, Core::language->thousand_separator).' Ergebnisse');
-			Bot::queue('#1: '.strip_tags($data['responseData']['results'][0]['title']).': '.$data['responseData']['results'][0]['unescapedUrl']);
+			$bot->queue('Google ['.substr($bot->message['text'], 8).']: http://google.de/search?q='.rawurlencode(substr($bot->message, 8)).' Ungefähr '.number_format($data['responseData']['cursor']['estimatedResultCount'], 0, Core::language()->decimal_point, Core::language->thousand_separator).' Ergebnisse');
+			$bot->queue('#1: '.strip_tags($data['responseData']['results'][0]['title']).': '.$data['responseData']['results'][0]['unescapedUrl']);
 		}
 	}
 	
