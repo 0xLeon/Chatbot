@@ -9,9 +9,15 @@ class Language {
 	protected $items = array();
 	
 	public function __construct($languageCode) {
-		if (!file_exists(DIR.'language/'.$languageCode.'.lng')) {
+		if (!$this->load($languageCode)) {
 			Core::log()->error = 'Could not find language '.$languageCode;
 			exit;
+		}
+	}
+	
+	public function load($languageCode) {
+		if (!file_exists(DIR.'language/'.$languageCode.'.lng')) {
+			return false;
 		}
 		$this->items = parse_ini_file(DIR.'language/'.$languageCode.'.lng');
 	}
