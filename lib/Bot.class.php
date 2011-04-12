@@ -69,6 +69,20 @@ class Bot {
 	 * @var integer
 	 */
 	public $sendCount = 0;
+	
+	const NORMAL = 0;
+	const JOIN = 1;
+	const LEAVE = 2;
+	const AWAY = 3;
+	const BACK = 4;
+	const MODERATE = 5;
+	const ME = 6;
+	const WHISPER = 7;
+	const INFORMATION = 8;
+	const CLEAR = 9;
+	const TEAM = 10;
+	const GLOBALMESSAGE = 11;
+	
 	public function __construct() {
 		$this->connection = new Connection(SERVER, ID, null, null, HASH);
 		$this->connection->getSecurityToken();
