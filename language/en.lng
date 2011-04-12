@@ -1,5 +1,8 @@
 ; English language
 
+decimal_point = .
+thousand_separator = ,
+
 module_error_1 = This module is already loaded
 module_error_2 = This module is not loaded
 module_error_3 = The module cannot be found
