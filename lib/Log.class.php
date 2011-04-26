@@ -16,11 +16,7 @@ class Log {
 	 */
 	public function log($log, $what) {
 		echo	"[".date('d.m.Y H:i:s')."] ".$log.": ".$what."\n";
-		$data = '';
-		if (file_exists(DIR.'log/'.$log)) {
-			$data = file_get_contents(DIR.'log/'.$log);
-		}
-		file_put_contents(DIR.'log/'.$log, $data."\n[".date('d.m.Y H:i:s')."] ".$what);
+		file_put_contents(DIR.'log/'.$log, '['.date('d.m.Y H:i:s').'] '.$what."\n", FILE_APPEND);
 	}
 	
 	/**
