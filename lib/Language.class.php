@@ -20,6 +20,7 @@ class Language {
 			return false;
 		}
 		$this->items = parse_ini_file(DIR.'language/'.$languageCode.'.lng');
+		return true;
 	}
 	
 	public function __get($name) {
