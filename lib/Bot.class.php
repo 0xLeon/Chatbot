@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Main Bot class, handles messages
  *
@@ -70,6 +69,7 @@ class Bot {
 	 */
 	public $sendCount = 0;
 	
+	// Message-Types from the chat
 	const NORMAL = 0;
 	const JOIN = 1;
 	const LEAVE = 2;
@@ -435,6 +435,11 @@ class Bot {
 		file_put_contents(DIR.'say', $data.$roomID.' '.$message);
 	}
 	
+	/**
+	 * Reads data from STDIN
+	 *
+	 * @return	void
+	 */
 	public function parseSTDIN() {
 		$read = array();
 		$read[] = STDIN;
@@ -444,6 +449,7 @@ class Bot {
 		if (count($read)) {
 			$data = @fread(STDIN, 1500);
 			$data = trim(str_replace(array("\r", "\n"), '', $data));
+			// add message
 			$this->data['messages'][] = array('id' => 500, 'usernameraw' => NAME, 'username' => NAME, 'text' => $data, 'type' => 0, 'roomID' => 0);
 		}
 	}

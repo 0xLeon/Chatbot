@@ -60,7 +60,7 @@ class Connection {
 	protected $files = array();
 
 	/**
-	 * Parses then URL and calculates the logindata
+	 * Parses the URL and calculates the logindata
 	 *
 	 * @param	string	$url		URL of the WCF to access
 	 * @param	integer	$userID		The UserID to use

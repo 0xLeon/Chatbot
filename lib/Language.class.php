@@ -15,6 +15,12 @@ class Language {
 		}
 	}
 	
+	/**
+	 * Loads the given language
+	 *
+	 * @param	string	$languageCode	language to load
+	 * @return	boolean					success
+	 */
 	public function load($languageCode) {
 		if (!file_exists(DIR.'language/'.$languageCode.'.lng')) {
 			return false;
@@ -23,11 +29,21 @@ class Language {
 		return true;
 	}
 	
+	/**
+	 * @see Language::get();
+	 */
 	public function __get($name) {
 		return $this->get($name);
 	}
 	
-	public function get($name, Array $vars = array()) {
+	/**
+	 * Returns the languageitem
+	 *
+	 * @param	string		$name	item-name
+	 * @param	array<mixed>	$vars	variables to replace
+	 * @return	string				item
+	 */
+	public function get($name, array $vars = array()) {
 		if (isset($this->items[$name])) {
 			return str_replace(array_keys($vars), array_values($vars), $this->items[$name]);
 		}
