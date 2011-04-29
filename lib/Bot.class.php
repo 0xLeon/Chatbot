@@ -339,7 +339,7 @@ class Bot {
 		foreach ($this->data['users'] as $user) {
 			if ($user['usernameraw'] == $username) return $user['userID'];
 		}
-		return $this->getConnection()->lookUp($username);
+		return $this->getConnection()->lookUpUserID($username);
 	}
 	
 	/**
