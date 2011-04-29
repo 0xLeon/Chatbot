@@ -31,3 +31,4 @@ set_error_handler(array('Core', 'handleError'), E_ALL|E_STRICT|E_WARNING|E_NOTIC
 
 // start up 
 Core::get();
+?>

@@ -291,3 +291,4 @@ class Connection {
 		return $matches[1];
 	}
 }
+?>
