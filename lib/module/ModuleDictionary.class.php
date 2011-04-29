@@ -44,7 +44,7 @@ class ModuleDictionary extends Module {
 			}
 		}
 		else if (Module::removeWhisper($bot->message['text']) == '!listdic') {
-			if (Core::compareLevel($bot->lookUpUserID(), 'dic.add')) {
+			if (Core::compareLevel($bot->lookUpUserID(), 'dic.list')) {
 				$entries = array_keys($this->config->config);
 				sort($entries);
 				$bot->queue('/whisper "'.$bot->message['usernameraw'].'" '.Core::language()->dic_listdic.': '.implode(', ', $entries));
