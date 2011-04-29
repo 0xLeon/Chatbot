@@ -162,168 +162,173 @@ class Bot {
 		
 		// main loop
 		while (true) {
-			if ($this->needRefork) {
-				$this->fork();
-				$this->needRefork = false;
+			try {
+				if ($this->needRefork) {
+					$this->fork();
+					$this->needRefork = false;
+					
+					if ($this->child === 0) {
+						// child process
+						return $this->child();
+					}
+					else {
+						Core::log()->info = 'Child is: '.$this->child;
+					}
+				}
 				
-				if ($this->child === 0) {
-					// child process
-					return $this->child();
-				}
-				else {
-					Core::log()->info = 'Child is: '.$this->child;
-				}
-			}
-			
-			// read messages
-			$this->read();
-			$this->parseSTDIN();
-			if (!is_array($this->data['messages'])) continue;
+				// read messages
+				$this->read();
+				$this->parseSTDIN();
+				if (!is_array($this->data['messages'])) continue;
 
-			$this->messageCount += count($this->data['messages']);
-			foreach($this->data['messages'] as $this->message) {
-				// remove crap
-				$this->message['text'] = html_entity_decode(
-					preg_replace('~<a href="(.*)">(.*)</a>~U', "\${1}", 
-						preg_replace('~<img src="(.*)" alt="(.*)" />~U', "\${2}", 
-							$this->message['text']
+				$this->messageCount += count($this->data['messages']);
+				foreach($this->data['messages'] as $this->message) {
+					// remove crap
+					$this->message['text'] = html_entity_decode(
+						preg_replace('~<a href="(.*)">(.*)</a>~U', "\${1}", 
+							preg_replace('~<img src="(.*)" alt="(.*)" />~U', "\${2}", 
+								$this->message['text']
+							)
 						)
-					)
-				);
-				
-				// core commands
-				if (substr(Module::removeWhisper($this->message['text']), 0, 6) == '!load ') {
-					if (Core::compareLevel($this->lookUpUserID(), 'op.load')) {
-						Core::log()->info = $this->message['usernameraw'].' loaded a module';
-						$result = Core::loadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 5)));
-						if (!is_int($result)) {
+					);
+					
+					// core commands
+					if (substr(Module::removeWhisper($this->message['text']), 0, 6) == '!load ') {
+						if (Core::compareLevel($this->lookUpUserID(), 'op.load')) {
+							Core::log()->info = $this->message['usernameraw'].' loaded a module';
+							$result = Core::loadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 5)));
+							if (!is_int($result)) {
+								$this->success();
+							}
+							else {
+								$name = 'module_error_'.$result;
+								$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->$name);
+							}
+						}
+						else {
+							$this->denied();
+						}
+					}
+					else if (substr(Module::removeWhisper($this->message['text']), 0, 8) == '!unload ') {
+						if (Core::compareLevel($this->lookUpUserID(), 'op.load')) {
+							Core::log()->info = $this->message['usernameraw'].' unloaded a module';
+							$result = Core::unloadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 7)));
+							if (!is_int($result)) {
+								$this->success();
+							}
+							else {
+								$name = 'module_error_'.$result;
+								$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->$name);
+							}
+						}
+						else {
+							$this->denied();
+						}
+					}
+					else if (substr(Module::removeWhisper($this->message['text']), 0, 8) == '!reload ') {
+						if (Core::compareLevel($this->lookUpUserID(), 'op.load')) {
+							Core::log()->info = $this->message['usernameraw'].' reloaded a module';
+							$result = Core::reloadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 7)));
+							if (!is_int($result)) {
+								$this->success();
+							}
+							else {
+								$name = 'module_error_'.$result;
+								$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->$name);
+							}
+						}
+						else {
+							$this->denied();
+						}
+					}
+					// fallback
+					else if (substr(Module::removeWhisper($this->message['text']), 0, 4) == '!op ') {
+						$user = trim(substr(Module::removeWhisper($this->message['text']), 4));
+						if (Core::compareLevel($this->lookUpUserID(), 500)) {
+							$userID = $this->lookUpUserID($user);
+							if ($userID) {
+								Core::log()->info = $this->message['usernameraw'].' opped '.$user;
+								Core::config()->config['levels'][$userID] = 1;
+								Core::config()->write();
+								$this->success();
+							}
+							else {
+								$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->get('user_not_found', array('{user}' => $user)));
+							}
+						}
+						else {
+							$this->denied();
+						}
+					}
+					else if (substr(Module::removeWhisper($this->message['text']), 0, 6) == '!deop ') {
+						$user = trim(substr(Module::removeWhisper($this->message['text']), 6));
+						if (Core::compareLevel($this->lookUpUserID(), 500)) {
+							$userID = $this->lookUpUserID($user);
+							if ($userID) {
+								Core::log()->info = $this->message['usernameraw'].' deopped '.$user;
+								unset(Core::config()->config['levels'][$userID]);
+								Core::config()->write();
+								$this->success();
+							}
+							else {
+								$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->get('user_not_found', array('{user}' => $user)));
+							}
+						}
+						else {
+							$this->denied();
+						}
+					}
+					else if (substr(Module::removeWhisper($this->message['text']), 0, 7) == '!level ') {
+						$data = trim(substr(Module::removeWhisper($this->message['text']), 7));
+						$split = strrpos($data, ' ');
+						$user = substr($data, 0, $split);
+						$level = substr($data, $split+1);
+						if (Core::compareLevel($this->lookUpUserID(), 500)) {
+							$userID = $this->lookUpUserID($user);
+							if ($userID) {
+								Core::log()->info = $this->message['usernameraw'].' opped '.$user;
+								Core::config()->config['levels'][$userID] = $level;
+								Core::config()->write();
+								$this->success();
+							}
+							else {
+								$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->get('user_not_found', array('{user}' => $user)));
+							}
+						}
+						else {
+							$this->denied();
+						}
+					}
+					else if (substr(Module::removeWhisper($this->message['text']), 0, 6) == '!perm ') {
+						$data = trim(substr(Module::removeWhisper($this->message['text']), 6));
+						$split = strrpos($data, ' ');
+						$node = substr($data, 0, $split);
+						$level = substr($data, $split+1);
+						if (Core::compareLevel($this->lookUpUserID(), 500)) {
+							Core::permission()->$node = $level;
 							$this->success();
 						}
 						else {
-							$name = 'module_error_'.$result;
-							$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->$name);
+							$this->denied();
 						}
 					}
 					else {
-						$this->denied();
-					}
-				}
-				else if (substr(Module::removeWhisper($this->message['text']), 0, 8) == '!unload ') {
-					if (Core::compareLevel($this->lookUpUserID(), 'op.load')) {
-						Core::log()->info = $this->message['usernameraw'].' unloaded a module';
-						$result = Core::unloadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 7)));
-						if (!is_int($result)) {
-							$this->success();
-						}
-						else {
-							$name = 'module_error_'.$result;
-							$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->$name);
-						}
-					}
-					else {
-						$this->denied();
-					}
-				}
-				else if (substr(Module::removeWhisper($this->message['text']), 0, 8) == '!reload ') {
-					if (Core::compareLevel($this->lookUpUserID(), 'op.load')) {
-						Core::log()->info = $this->message['usernameraw'].' reloaded a module';
-						$result = Core::reloadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 7)));
-						if (!is_int($result)) {
-							$this->success();
-						}
-						else {
-							$name = 'module_error_'.$result;
-							$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->$name);
-						}
-					}
-					else {
-						$this->denied();
-					}
-				}
-				// fallback
-				else if (substr(Module::removeWhisper($this->message['text']), 0, 4) == '!op ') {
-					$user = trim(substr(Module::removeWhisper($this->message['text']), 4));
-					if (Core::compareLevel($this->lookUpUserID(), 500)) {
-						$userID = $this->lookUpUserID($user);
-						if ($userID) {
-							Core::log()->info = $this->message['usernameraw'].' opped '.$user;
-							Core::config()->config['levels'][$userID] = 1;
-							Core::config()->write();
-							$this->success();
-						}
-						else {
-							$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->get('user_not_found', array('{user}' => $user)));
-						}
-					}
-					else {
-						$this->denied();
-					}
-				}
-				else if (substr(Module::removeWhisper($this->message['text']), 0, 6) == '!deop ') {
-					$user = trim(substr(Module::removeWhisper($this->message['text']), 6));
-					if (Core::compareLevel($this->lookUpUserID(), 500)) {
-						$userID = $this->lookUpUserID($user);
-						if ($userID) {
-							Core::log()->info = $this->message['usernameraw'].' deopped '.$user;
-							unset(Core::config()->config['levels'][$userID]);
-							Core::config()->write();
-							$this->success();
-						}
-						else {
-							$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->get('user_not_found', array('{user}' => $user)));
-						}
-					}
-					else {
-						$this->denied();
-					}
-				}
-				else if (substr(Module::removeWhisper($this->message['text']), 0, 7) == '!level ') {
-					$data = trim(substr(Module::removeWhisper($this->message['text']), 7));
-					$split = strrpos($data, ' ');
-					$user = substr($data, 0, $split);
-					$level = substr($data, $split+1);
-					if (Core::compareLevel($this->lookUpUserID(), 500)) {
-						$userID = $this->lookUpUserID($user);
-						if ($userID) {
-							Core::log()->info = $this->message['usernameraw'].' opped '.$user;
-							Core::config()->config['levels'][$userID] = $level;
-							Core::config()->write();
-							$this->success();
-						}
-						else {
-							$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->get('user_not_found', array('{user}' => $user)));
-						}
-					}
-					else {
-						$this->denied();
-					}
-				}
-				else if (substr(Module::removeWhisper($this->message['text']), 0, 6) == '!perm ') {
-					$data = trim(substr(Module::removeWhisper($this->message['text']), 6));
-					$split = strrpos($data, ' ');
-					$node = substr($data, 0, $split);
-					$level = substr($data, $split+1);
-					if (Core::compareLevel($this->lookUpUserID(), 500)) {
-						Core::permission()->$node = $level;
-						$this->success();
-					}
-					else {
-						$this->denied();
-					}
-				}
-				else {
-					// handle the modules
-					$modules = Core::getModules();
-					foreach ($modules as $module) {
-						$userID = $this->lookUpUserID($this->message['usernameraw']);
+						// handle the modules
+						$modules = Core::getModules();
+						foreach ($modules as $module) {
+							$userID = $this->lookUpUserID($this->message['usernameraw']);
 
-						if (($module instanceof AlwaysFire) || !isset(Core::config()->config['ignore'][$userID])) {
-							$module->handle($this);
+							if (($module instanceof AlwaysFire) || !isset(Core::config()->config['ignore'][$userID])) {
+								$module->handle($this);
+							}
 						}
 					}
 				}
+				usleep(250000);
 			}
-			usleep(250000);
+			catch (Exception $e) {
+				echo $e;
+			}
 		}
 	}
 	
