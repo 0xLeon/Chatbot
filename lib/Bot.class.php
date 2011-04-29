@@ -327,7 +327,7 @@ class Bot {
 				usleep(250000);
 			}
 			catch (Exception $e) {
-				echo $e;
+				echo $e."\n";
 			}
 		}
 	}
