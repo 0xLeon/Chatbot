@@ -1,6 +1,6 @@
 <?php
 /**
- * Module-related function
+ * Module-related functions
  *
  * @author	Tim Düsterhus
  * @copyright	2010 - 2011 Tim Düsterhus

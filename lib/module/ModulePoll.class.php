@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Polls
+ *
+ * @author	Tim Düsterhus
+ * @copyright	2010 - 2011 Tim Düsterhus
+ */
 class ModulePoll extends Module {
 	protected $yes = 0;
 	protected $no = 0;

@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Logs all messages
+ *
+ * @author	Tim Düsterhus
+ * @copyright	2010 - 2011 Tim Düsterhus
+ */
 class ModuleLog extends Module {
 	public function destruct() {
 

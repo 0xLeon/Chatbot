@@ -1,4 +1,10 @@
 <?php
+/**
+ * Evals given PHP-Code
+ *
+ * @author	Tim Düsterhus
+ * @copyright	2010 - 2011 Tim Düsterhus
+ */
 class ModulePHP extends Module {
 	public function destruct() {
 
@@ -11,3 +17,4 @@ class ModulePHP extends Module {
 		}
 	}
 }
+?>

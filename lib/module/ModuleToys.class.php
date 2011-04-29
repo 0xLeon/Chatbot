@@ -1,4 +1,10 @@
 <?php
+/**
+ * Several "Toys" like an Eightball or a dice
+ *
+ * @author	Tim Düsterhus
+ * @copyright	2010 - 2011 Tim Düsterhus
+ */
 class ModuleToys extends Module {
 	public static $eight = 12;
 
@@ -48,3 +54,4 @@ class ModuleToys extends Module {
 		}
 	}
 }
+?>

@@ -1,4 +1,10 @@
 <?php
+/**
+ * Posts a message when a user joins
+ *
+ * @author	Tim Düsterhus
+ * @copyright	2010 - 2011 Tim Düsterhus
+ */
 class ModuleQuotes extends Module {
 	protected $config = null;
 	protected $coolDown = array();
@@ -63,3 +69,4 @@ class ModuleQuotes extends Module {
 		}
 	}
 }
+?>

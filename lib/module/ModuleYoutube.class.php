@@ -1,7 +1,13 @@
 <?php
-
+/**
+ * Resolves Youtube-Links
+ *
+ * @author	Tim Düsterhus
+ * @copyright	2010 - 2011 Tim Düsterhus
+ */
 class ModuleYoutube extends Module {
 	protected $cache = array();
+	
 	public function destruct() {
 
 	}

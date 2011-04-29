@@ -6,4 +6,4 @@
  * @copyright	2010 - 2011 Tim Düsterhus
  */
 interface AlwaysFire { }
-
+?>

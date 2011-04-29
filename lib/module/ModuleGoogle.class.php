@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Adds a google-function
+ *
+ * @author	Tim Düsterhus
+ * @copyright	2010 - 2011 Tim Düsterhus
+ */
 class ModuleGoogle extends Module {
 	public function destruct() {
 

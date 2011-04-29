@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Provides basic antispam functions
+ *
+ * @author	Tim Düsterhus
+ * @copyright	2010 - 2011 Tim Düsterhus
+ */
 class ModuleAntiSpam extends Module implements AlwaysFire {
 	protected $config = null;
 	protected $caps = array();

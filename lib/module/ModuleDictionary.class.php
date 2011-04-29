@@ -1,4 +1,10 @@
 <?php
+/**
+ * Adds a kind of dictionary
+ *
+ * @author	Tim Düsterhus
+ * @copyright	2010 - 2011 Tim Düsterhus
+ */
 class ModuleDictionary extends Module {
 	protected $config = null;
 	public function __construct() {
@@ -49,3 +55,4 @@ class ModuleDictionary extends Module {
 		}
 	}
 }
+?>

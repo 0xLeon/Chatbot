@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Lotto-Game
+ *
+ * @author	Tim Düsterhus
+ * @copyright	2010 - 2011 Tim Düsterhus
+ */
 class ModuleLotto extends Module {
 
 	// todo: save all wins in database.

@@ -1,4 +1,10 @@
 <?php
+/**
+ * Functions for OPs
+ *
+ * @author	Tim Düsterhus
+ * @copyright	2010 - 2011 Tim Düsterhus
+ */
 class ModuleOp extends Module {
 	public function destruct() {
 
@@ -48,3 +54,4 @@ class ModuleOp extends Module {
 		}
 	}
 }
+?>
