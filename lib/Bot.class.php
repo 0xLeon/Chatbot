@@ -196,7 +196,7 @@ class Bot {
 					if (substr(Module::removeWhisper($this->message['text']), 0, 6) == '!load ') {
 						if (Core::compareLevel($this->lookUpUserID(), 'op.load')) {
 							Core::log()->info = $this->message['usernameraw'].' loaded a module';
-							$result = Core::loadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 5)));
+							$result = Core::loadModule(trim(substr(Module::removeWhisper($this->message['text']), 5)));
 							if (!is_int($result)) {
 								$this->success();
 							}
@@ -212,7 +212,7 @@ class Bot {
 					else if (substr(Module::removeWhisper($this->message['text']), 0, 8) == '!unload ') {
 						if (Core::compareLevel($this->lookUpUserID(), 'op.load')) {
 							Core::log()->info = $this->message['usernameraw'].' unloaded a module';
-							$result = Core::unloadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 7)));
+							$result = Core::unloadModule(trim(substr(Module::removeWhisper($this->message['text']), 7)));
 							if (!is_int($result)) {
 								$this->success();
 							}
@@ -228,7 +228,7 @@ class Bot {
 					else if (substr(Module::removeWhisper($this->message['text']), 0, 8) == '!reload ') {
 						if (Core::compareLevel($this->lookUpUserID(), 'op.load')) {
 							Core::log()->info = $this->message['usernameraw'].' reloaded a module';
-							$result = Core::reloadModule(StringUtil::trim(substr(Module::removeWhisper($this->message['text']), 7)));
+							$result = Core::reloadModule(trim(substr(Module::removeWhisper($this->message['text']), 7)));
 							if (!is_int($result)) {
 								$this->success();
 							}
