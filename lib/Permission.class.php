@@ -4,6 +4,7 @@
  *
  * @author	Tim Düsterhus
  * @copyright	2010 - 2011 Tim Düsterhus
+ * @licence	GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
 class Permission {
 	/**
@@ -21,7 +22,7 @@ class Permission {
 	/**
 	 * Gets a permission
 	 *
-	 * @param	string	$name	permissionname
+	 * @param	string		$name	permissionname
 	 * @return	integer			value
 	 */
 	public function __get($name) {
@@ -32,8 +33,8 @@ class Permission {
 	/**
 	 * Sets a permission
 	 *
-	 * @param	string	$name	permissionname
-	 * @param	integer	$value	new value
+	 * @param	string		$name	permissionname
+	 * @param	integer		$value	new value
 	 * @return	void
 	 */
 	public function __set($name, $value) {
@@ -44,7 +45,7 @@ class Permission {
 	/**
 	 * Gets all permissions
 	 *
-	 * @return	array<integer>	permissions
+	 * @return	array<integer>		permissions
 	 */
 	public function getNodes() {
 		return $this->config->config;

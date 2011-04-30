@@ -34,7 +34,7 @@ class ModuleLotto extends Module {
 		}
 
 		if (substr($this->bot->message['text'], 0, 6) == '!tipp ' && $this->gameActive) {
-			$numbers = str_replace('!tipp ', '', StringUtil::trim($this->bot->message['text']));
+			$numbers = str_replace('!tipp ', '', trim($this->bot->message['text']));
 			$numbers = preg_replace('~\s\s+~', '', $numbers);
 			$numbers = explode(' ', $numbers);
 			$this->regUser($this->bot->message['usernameraw'], $numbers);

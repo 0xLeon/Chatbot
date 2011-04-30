@@ -1,5 +1,6 @@
 <?php
 if (!defined('USERAGENT')) define('USERAGENT', 'PHP/'.phpversion().' ('.php_uname('s').' '.php_uname('r').') WCFApi/1.0');
+
 /**
  * WCFApi provides methods to externally access a WCF
  *
