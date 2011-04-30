@@ -4,14 +4,15 @@
  *
  * @author	Tim Düsterhus
  * @copyright	2010 - 2011 Tim Düsterhus
+ * @licence	GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
 class Log {
 	
 	/**
 	 * Logs an action
 	 *
-	 * @param	string	$log		log-name
-	 * @param	string	$what	message
+	 * @param	string		$log	log-name
+	 * @param	string		$what	message
 	 * @return	void
 	 */
 	public function log($log, $what) {
@@ -36,7 +37,7 @@ class Log {
 	/**
 	 * Clears the log
 	 *
-	 * @param	string	$log		log-name
+	 * @param	string		$log	log-name
 	 * @return	void
 	 */
 	public function clear($log) {

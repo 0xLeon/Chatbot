@@ -4,6 +4,7 @@
  *
  * @author	Tim Düsterhus
  * @copyright	2010 - 2011 Tim Düsterhus
+ * @licence	GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
 class Core {
 	
@@ -105,6 +106,12 @@ class Core {
 		define('LANGUAGE', ((isset($args['options']['language'])) ? $args['options']['language'] : 'de'));
 	}
 	
+	/**
+	 * Parses CLI-Args
+	 *
+	 * @param	array<mixed>	$args	arguments
+	 * @return	array<mixed>		parsed arguments
+	 */
 	protected static function parseArgs($args){
 		$ret = array(
 			'exec'      => '',
@@ -181,10 +188,20 @@ class Core {
 		unlink(DIR.'bot.pid');
 	}
 	
+	/**
+	 * @see		Core::compareLevel()
+	 */
 	public static function isOp($userID) {
 		return self::compareLevel($userID, 1);
 	}
-
+	
+	/**
+	 * Checks whether the user has enough access
+	 *
+	 * @param	integer		$userID		user to check
+	 * @param	integer		$level		needed level
+	 * @return	boolean				access
+	 */
 	public static function compareLevel($userID, $level) {
 		if (!is_int($level)) {
 			$level = self::permission()->$level;
@@ -195,8 +212,8 @@ class Core {
 	/**
 	 * Loads the given module
 	 *
-	 * @var		string	$module		module-name
-	 * @return	string			module-address
+	 * @var		string		$module		module-name
+	 * @return	string				module-address
 	 */
 	public static function loadModule($module) {
 		$module = ucfirst($module);
@@ -239,7 +256,7 @@ class Core {
 	/**
 	 * Unloads the given module
 	 *
-	 * @var		string	$module		module-name
+	 * @var		string		$module		module-name
 	 * @return	void
 	 */
 	public static function unloadModule($module) {
@@ -266,7 +283,7 @@ class Core {
 	/**
 	 * Reloads the given module
 	 *
-	 * @var		string	$module		module-name
+	 * @var		string		$module		module-name
 	 * @return	void
 	 */
 	public static function reloadModule($module) {
@@ -277,8 +294,8 @@ class Core {
 	/**
 	 * Checks whether the module is loaded
 	 *
-	 * @var		string	$module		module-name
-	 * @return	boolean			module loaded
+	 * @var		string		$module		module-name
+	 * @return	boolean				module loaded
 	 */
 	public static function moduleLoaded($module) {
 		return isset(self::$modules[$module]);

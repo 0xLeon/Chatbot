@@ -1,18 +1,19 @@
 <?php
 define('USERAGENT', 'PHP/'.phpversion().' ('.php_uname('s').' '.php_uname('r').') Chatbot/2.0');
 if (!defined('API_KEY')) define('API_KEY', '');
+
 /**
  * WCFApi provides methods to externally access a WCF
  * 
  * @author	Tim Düsterhus
- * @copyright	2010 Tim Düsterhus
+ * @copyright	2010 - 2011 Tim Düsterhus
  * @licence	GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
 class Connection extends WCFApi {
 	/**
 	 * Joins the chat
 	 *
-	 * @return	string	request answer
+	 * @return	string		request answer
 	 */
 	public function joinChat() {
 		$this->url['query'] = 'page=Chat';
@@ -22,7 +23,7 @@ class Connection extends WCFApi {
 	/**
 	 * Sends a message
 	 *
-	 * @param	string	$message		message to send
+	 * @param	string		$message	message to send
 	 * @return	void
 	 */
 	public function postMessage($message) {
@@ -42,7 +43,7 @@ class Connection extends WCFApi {
 	/**
 	 * Reads the message after $id
 	 *
-	 * @param	integer			$id	offset
+	 * @param	integer		$id	offset
 	 * @return	array<array>		json result
 	 */
 	public function readMessages($id) {
@@ -60,8 +61,8 @@ class Connection extends WCFApi {
 	/**
 	 * Joins the room
 	 * 
-	 * @param	integer	$roomID	room to join
-	 * @return	string	request answer
+	 * @param	integer		$roomID		room to join
+	 * @return	string				request answer
 	 */
 	public function join($roomID) {
 		$this->url['query'] = 'page=Chat&ajax=1&room='.$roomID;
@@ -72,7 +73,7 @@ class Connection extends WCFApi {
 	/**
 	 * Returns the roomlist
 	 *
-	 * @return	string	request answer
+	 * @return	string		request answer
 	 */
 	public function getRooms() {
 		$this->url['query'] = 'page=ChatRefreshRoomList';

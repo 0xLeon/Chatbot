@@ -4,6 +4,7 @@
  *
  * @author	Tim Düsterhus
  * @copyright	2010 - 2011 Tim Düsterhus
+ * @licence	GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
 class Language {
 	protected $items = array();
@@ -18,8 +19,8 @@ class Language {
 	/**
 	 * Loads the given language
 	 *
-	 * @param	string	$languageCode	language to load
-	 * @return	boolean					success
+	 * @param	string		$languageCode	language to load
+	 * @return	boolean				success
 	 */
 	public function load($languageCode) {
 		if (!file_exists(DIR.'language/'.$languageCode.'.lng')) {
@@ -41,7 +42,7 @@ class Language {
 	 *
 	 * @param	string		$name	item-name
 	 * @param	array<mixed>	$vars	variables to replace
-	 * @return	string				item
+	 * @return	string			item
 	 */
 	public function get($name, array $vars = array()) {
 		if (isset($this->items[$name])) {

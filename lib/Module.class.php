@@ -4,10 +4,11 @@
  *
  * @author	Tim Düsterhus
  * @copyright	2010 - 2011 Tim Düsterhus
+ * @licence	GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
 abstract class Module {
 	/**
-	 * Called on shutdown
+	 * Called on unload
 	 *
 	 * @return	void
 	 */
@@ -16,7 +17,7 @@ abstract class Module {
 	/**
 	 * Handles a message
 	 *
-	 * @param	Bot	$bot		Bot-instance
+	 * @param	Bot		$bot		Bot-instance
 	 * @return	void
 	 */
 	abstract public function handle(Bot $bot);
@@ -24,7 +25,7 @@ abstract class Module {
 	/**
 	 * Removes the "flüstert an XXX"
 	 *
-	 * @param	string	$message		message to clean
+	 * @param	string		$message	message to clean
 	 * @return	string				cleaned message
 	 */
 	public static function removeWhisper($message) {
@@ -34,7 +35,7 @@ abstract class Module {
 	/**
 	 * Returns the module-name
 	 *
-	 * @return	string	Module-name
+	 * @return	string				Module-name
 	 */
 	public function __toString() {
 		return get_called_class();

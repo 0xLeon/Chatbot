@@ -4,6 +4,7 @@
  *
  * @author	Tim Düsterhus
  * @copyright	2010 - 2011 Tim Düsterhus
+ * @licence	GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
 class Bot {
 	/**
@@ -94,11 +95,11 @@ class Bot {
 	/**
 	 * Handles Signals
 	 *
-	 * @param	integer	$signo	the signal-numeric
+	 * @param	integer		$signal		the signal-numeric
 	 * @return	void
 	 */
-	public function signalHandler($signo) {
-		switch ($signo) {
+	public function signalHandler($signal) {
+		switch ($signal) {
 			case SIGTERM:
 			case SIGUSR1:
 				// handle shutdown tasks
@@ -106,7 +107,7 @@ class Bot {
 					Core::log()->error = 'Received SIGTERM / SIGUSR1';
 					posix_kill($this->child, SIGTERM); 
 				}
-				if ($signo === SIGTERM) exit;
+				if ($signal === SIGTERM) exit;
 				else exit(2);
 			case SIGCHLD:
 				pcntl_waitpid(-1, $status);
@@ -114,10 +115,16 @@ class Bot {
 				$this->needRefork = true;
 				return;
 			default:
-			     // handle all other signals
+			break;
 		}
 	}
 	
+	/**
+	 * Shuts the bot down
+	 *
+	 * @param	integer		$signal		the signal-numeric
+	 * @return	void
+	 */
 	public function shutdown($signal = SIGTERM) {
 		posix_kill(getmypid(), $signal);
 	}
@@ -125,7 +132,7 @@ class Bot {
 	/**
 	 * Checks whether we are in the parent process
 	 *
-	 * @return boolean
+	 * @return	boolean
 	 */
 	public function isParent() {
 		return ($this->child > 0);
@@ -134,7 +141,7 @@ class Bot {
 	/**
 	 * Forks the bot
 	 *
-	 * @return void
+	 * @return	void
 	 */
 	public function fork() {
 		$this->child = pcntl_fork();
@@ -148,7 +155,7 @@ class Bot {
 	/**
 	 * Does all the work
 	 * 
-	 * @return void
+	 * @return	void
 	 */
 	public function work() {
 		if (VERBOSE > 0) Core::log()->info = 'Initializing finished, forking';
@@ -335,7 +342,7 @@ class Bot {
 	/**
 	 * Looks the userID of the specified user up
 	 * 
-	 * @param	string	$username	The username to check
+	 * @param	string		$username	The username to check
 	 * @return	integer				The matching userID
 	 */
 	public function lookUpUserID($username = null) {
@@ -350,7 +357,7 @@ class Bot {
 	/**
 	 * Does the work for the child
 	 * 
-	 * @return void
+	 * @return	void
 	 */
 	public function child() {
 		while (true) {
@@ -364,7 +371,7 @@ class Bot {
 	
 	
 	/**
-	 * @see Bot::$connection
+	 * @see		Bot::$connection
 	 */
 	public function getConnection() {
 		return $this->connection;
@@ -373,7 +380,7 @@ class Bot {
 	/**
 	 * Reads the messages and parses the output
 	 *
-	 * @return void
+	 * @return	void
 	 */
 	public function read() {
 		$data = $this->getConnection()->readMessages($this->id);
@@ -388,7 +395,7 @@ class Bot {
 	/**
 	 * Loads new messages into queue
 	 *
-	 * @return void
+	 * @return	void
 	 */
 	public function loadQueue() {
 		if (file_exists('say')) {
@@ -404,7 +411,7 @@ class Bot {
 	/**
 	 * Prints out a success message
 	 *
-	 * @return void
+	 * @return	void
 	 */
 	public function success() {
 		$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->success);
@@ -413,7 +420,7 @@ class Bot {
 	/**
 	 * Prints out a permissionDenied message and logs the command
 	 *
-	 * @return void
+	 * @return	void
 	 */
 	public function denied() {
 		$this->queue('/whisper "'.$this->message['usernameraw'].'" '.Core::language()->access_denied);
@@ -423,7 +430,7 @@ class Bot {
 	/**
 	 * Adds a message to the queue
 	 *
-	 * @param	string	$message	message to add
+	 * @param	string		$message	message to add
 	 * @return	void
 	 */
 	public function queue($message, $roomID = null) {
