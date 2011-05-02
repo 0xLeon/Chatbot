@@ -52,6 +52,11 @@ class ModuleToys extends Module {
 			$send = $bot->data['users'][$sum % count($bot->data['users'])]['usernameraw'];
 			$bot->queue('['.$bot->message['usernameraw'].'] '.$send);
 		}
+		else if ($bot->message['type'] == Bot::MODERATE	&& preg_match('~bis [0-3][0-9].[01][0-9].([0-9]+)~', $bot->message['text'], $matches)) {
+			if ($matches[1] > (date('Y') + 9000)) {
+				$bot->queue('Its over ninethousand!');
+			}
+		}
 	}
 }
 ?>
