@@ -20,8 +20,16 @@ class ModuleApt extends Module {
 			break;
 			case 'install':
 				if (!Core::compareLevel($bot->lookUpUserID(), 'op.load')) return $bot->denied();
-				Core::log()->info = $this->message['usernameraw'].' loaded a module';
-				$result = Core::loadModule(trim($text[1]));
+				if (stripos($text[1], '--reinstall') !== -1) {
+					$text[1] = str_replace('--reinstall', '', $text[1]);
+					Core::log()->info = $this->message['usernameraw'].' reloaded a module';
+					$result = Core::reloadModule(trim($text[1]));
+				}
+				else {
+					Core::log()->info = $this->message['usernameraw'].' loaded a module';
+					$result = Core::loadModule(trim($text[1]));
+				}
+				
 				if (!is_int($result)) {
 					$this->success();
 				}
@@ -32,6 +40,7 @@ class ModuleApt extends Module {
 			break;
 			case 'remove':
 			case 'purge':
+				$text[1] = str_replace('--purge', '', $text[1]);
 				if (!Core::compareLevel($bot->lookUpUserID(), 'op.load')) return $bot->denied();
 				Core::log()->info = $this->message['usernameraw'].' unloaded a module';
 				$result = Core::unloadModule(trim($text[1]));
