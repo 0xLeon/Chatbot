@@ -12,8 +12,8 @@ class ModuleApt extends Module {
 
 	public function handle(Bot $bot) {
 		if (substr($bot->message['text'], 0, 7) != 'apt-get') return;
-		$text = explode(' ', substr($bot->message['text'], 7), 2);
-		
+		$text = explode(' ', substr($bot->message['text'], 8), 2);
+
 		switch ($text[0]) {
 			case 'moo':
 				$bot->queue('...."Have you mooed today?"...');
