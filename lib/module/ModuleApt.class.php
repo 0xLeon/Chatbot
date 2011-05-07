@@ -12,8 +12,8 @@ class ModuleApt extends Module {
 
 	public function handle(Bot $bot) {
 		if (substr($bot->message['text'], 0, 7) != 'apt-get') return;
-		$text = explode(' ', substr($bot->message['text'], 7), 2);
-		
+		$text = explode(' ', substr($bot->message['text'], 8), 2);
+
 		switch ($text[0]) {
 			case 'moo':
 				$bot->queue('...."Have you mooed today?"...');
@@ -51,6 +51,11 @@ class ModuleApt extends Module {
 					$name = 'module_error_'.$result;
 					$bot->queue('/whisper "'.$bot->message['usernameraw'].'" '.Core::language()->$name);
 				}
+			break;
+			case 'upgrade':
+				if (!Core::compareLevel($bot->lookUpUserID(), 'op.load')) return $bot->denied();
+				$modules = Core::getModules();
+				foreach ($modules as $module => $tmp) Core::reloadModule($module);
 			break;
 		}
 	}
