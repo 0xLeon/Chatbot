@@ -96,7 +96,11 @@ class ModuleQuiz extends Module {
 	}
 	
 	public function questionEnd() {
-		
+		Core::log()->quiz = 'Times over';
+		Core::log()->quiz = 'Answers by: '.implode(', ', $this->questionAnswers);
+		$this->bot->queue('Die Zeit ist um');
+		$this->bot->queue('Es gab Antworten von '.implode(', ', $this->questionAnswers));
+		$this->questionAnswers = array();
 	}
 }
 ?>
