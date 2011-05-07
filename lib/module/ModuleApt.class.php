@@ -52,6 +52,11 @@ class ModuleApt extends Module {
 					$bot->queue('/whisper "'.$bot->message['usernameraw'].'" '.Core::language()->$name);
 				}
 			break;
+			case 'upgrade':
+				if (!Core::compareLevel($bot->lookUpUserID(), 'op.load')) return $bot->denied();
+				$modules = Core::getModules();
+				foreach ($modules as $module => $tmp) Core::reloadModule($module);
+			break;
 		}
 	}
 }
