@@ -16,7 +16,7 @@ class ModuleToys extends Module {
 
 	public function handle(Bot $bot) {
 		if ($this->rouletteBullet == 0) $this->rouletteBullet = rand(1,6);
-	/*	if (preg_match('~^\.\.\.+$~', $bot->message['text'])) {
+		if (preg_match('~^\.\.\.+$~', $bot->message['text'])) {
 			$bot->queue('/me '.Core::language()->toys_pacman);
 		}
 
@@ -60,8 +60,7 @@ class ModuleToys extends Module {
 				$bot->queue('Its over ninethousand!');
 			}
 		}
-		else */if ($bot->message['text'] == '!shot' || 
-$bot->message['text'] == '!spin') {
+		else if ($bot->message['text'] == '!shot' || $bot->message['text'] == '!spin') {
 			if ($bot->message['text'] == '!spin') {
 				$this->rouletteBullet = rand(1,6);
 				$cost = 4;
@@ -74,8 +73,7 @@ $bot->message['text'] == '!spin') {
 			if (!isset($this->rouletteStatus[$bot->message['usernameraw']])) $this->rouletteStatus[$bot->message['usernameraw']] = 0;
 			$this->rouletteBullet--;
 			if ($this->rouletteBullet == 0) {
-				
-$this->rouletteStatus[$bot->message['usernameraw']] += $cost;
+				$this->rouletteStatus[$bot->message['usernameraw']] += $cost;
 				$bot->queue($message.'Boooom');
 				$bot->queue('/tmute '.$bot->message['usernameraw'].' '.($this->rouletteStatus[$bot->message['usernameraw']]));
 				
