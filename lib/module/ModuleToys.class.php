@@ -7,13 +7,16 @@
  */
 class ModuleToys extends Module {
 	public static $eight = 12;
+	public $rouletteBullet = 0;
+	public $rouletteStatus = array();
 
 	public function destruct() {
 
 	}
 
 	public function handle(Bot $bot) {
-		if (preg_match('~^\.\.\.+$~', $bot->message['text'])) {
+		if ($this->rouletteBullet == 0) $this->rouletteBullet = rand(1,6);
+	/*	if (preg_match('~^\.\.\.+$~', $bot->message['text'])) {
 			$bot->queue('/me '.Core::language()->toys_pacman);
 		}
 
@@ -52,10 +55,33 @@ class ModuleToys extends Module {
 			$send = $bot->data['users'][$sum % count($bot->data['users'])]['usernameraw'];
 			$bot->queue('['.$bot->message['usernameraw'].'] '.$send);
 		}
-		else if ($bot->message['type'] == Bot::MODERATE	&& preg_match('~bis [0-3][0-9].[01][0-9].([0-9]+)~', $bot->message['text'], $matches)) {
+		else if ($bot->message['type'] == Bot::MODERATE && preg_match('~bis [0-3][0-9].[01][0-9].([0-9]+)~', $bot->message['text'], $matches)) {
 			if ($matches[1] > (date('Y') + 9000)) {
 				$bot->queue('Its over ninethousand!');
 			}
+		}
+		else */if ($bot->message['text'] == '!shot' || 
+$bot->message['text'] == '!spin') {
+			if ($bot->message['text'] == '!spin') {
+				$this->rouletteBullet = rand(1,6);
+				$cost = 4;
+				$message = '['.$bot->message['usernameraw'].'] dreht den Zylinder und drückt ab…';
+			}
+			else {
+				$cost = 1;
+				$message = '['.$bot->message['usernameraw'].'] drückt ab…';
+			}
+			if (!isset($this->rouletteStatus[$bot->message['usernameraw']])) $this->rouletteStatus[$bot->message['usernameraw']] = 0;
+			$this->rouletteBullet--;
+			if ($this->rouletteBullet == 0) {
+				
+$this->rouletteStatus[$bot->message['usernameraw']] += $cost;
+				$bot->queue($message.'Boooom');
+				$bot->queue('/tmute '.$bot->message['usernameraw'].' '.($this->rouletteStatus[$bot->message['usernameraw']]));
+				
+				$this->rouletteBullet = rand(1,6);
+			}
+			else $bot->queue($message.'Klack, nichts passiert');
 		}
 	}
 }
