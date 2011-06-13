@@ -26,6 +26,7 @@ class ModuleDictionary extends Module {
 		else if (substr(Module::removeWhisper($bot->message['text']), 0, 5) == '!dic ') {
 			if (Core::compareLevel($bot->lookUpUserID(), 'dic.add')) {
 				$data = explode(' ', substr(Module::removeWhisper($bot->message['text']), 5), 2);
+				if (substr($data[1], 0, 1) == '!') return $bot->denied();
 				$this->config->config[$data[0]] = $data[1];
 				Core::log()->info = $bot->message['usernameraw'].' added '.$data[0].' to dictionary';
 				$bot->success();
