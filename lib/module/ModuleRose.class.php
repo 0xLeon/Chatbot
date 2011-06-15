@@ -30,6 +30,7 @@ class ModuleRose extends Module {
 				if ($this->config->config[$userID]['joins'] >= 3) {
 					$this->config->config[$userID]['joins'] = 0;
 					$this->config->config[$userID]['has']++;
+					$bot->queue('/whisper "'.$bot->message['usernameraw'].'" Du kannst jetzt '.$this->config->config[$userID]['has'].' Rosen verteilen: !rose Benutzername');
 				}
 			}
 		}
