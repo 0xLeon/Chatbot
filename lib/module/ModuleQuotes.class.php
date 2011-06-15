@@ -20,7 +20,7 @@ class ModuleQuotes extends Module {
 	
 	public function handle(Bot $bot) {
 		if ($bot->message['id'] % 500 == 0) $this->config->write();
-		if ($bot->message['text'] == 'hat den Chat betreten' && $bot->message['type'] == Bot::JOIN) {
+		if ($bot->message['type'] == Bot::JOIN) {
 			
 			$userID = $bot->lookUpUserID();
 			if (isset($this->config->config[$userID]) && (!isset($this->coolDown[$userID]) || ($this->coolDown[$userID] + 5 * 60) < time())) {
