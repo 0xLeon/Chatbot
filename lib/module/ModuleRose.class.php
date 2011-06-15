@@ -62,6 +62,7 @@ class ModuleRose extends Module {
 							$this->config->config[$to] = array('got' => 0, 'has' => 3, 'lastjoin' => 0, 'joins' => 0);
 						}
 						$this->config->config[$to]['got']++;
+						$this->config->config[$userID]['has']--;
 						$bot->queue('['.$bot->message['usernameraw'].'] hat eine Rose an '.$username.' gegeben');
 					}
 					else {
