@@ -70,6 +70,10 @@ class Bot {
 	 */
 	public $sendCount = 0;
 	
+	public $socketServer = null;
+	public $outgoingSocket = null;
+	public $incomingSocket = null;
+	
 	// Message-Types from the chat
 	const NORMAL = 0;
 	const JOIN = 1;
@@ -166,7 +170,10 @@ class Bot {
 		register_shutdown_function(array('Core', 'destruct'));
 		
 		$this->needRefork = true;
-		
+		$this->socketServer = stream_socket_server("tcp://127.0.0.1:9001", $errno, $errstr);
+		$this->incomingSocket = stream_socket_client("tcp://127.0.0.1:9001", $errno, $errstr, 30);
+		$this->outgoingSocket = stream_socket_accept($this->socketServer);
+
 		// main loop
 		while (true) {
 			try {
@@ -361,10 +368,8 @@ class Bot {
 	 */
 	public function child() {
 		while (true) {
-			self::loadQueue();
-			if (count($this->queue)) {
-				self::getConnection()->postMessage(array_shift($this->queue));
-			}
+			self::getConnection()->postMessage(fgets($this->incomingSocket, 1024));
+			
 			usleep(600000);
 		}
 	}
@@ -390,23 +395,7 @@ class Bot {
 			$this->id = $id['id'];
 		}
 		$this->data = $data;
-	}
-	
-	/**
-	 * Loads new messages into queue
-	 *
-	 * @return	void
-	 */
-	public function loadQueue() {
-		if (file_exists('say')) {
-			$data = explode("\n", file_get_contents(DIR.'say'));
-			unlink(DIR.'say');
-			foreach ($data as $d) {
-				if (!empty($d)) $this->queue[] = $d;
-			}
-		}
-	}
-	
+	}	
 	
 	/**
 	 * Prints out a success message
@@ -440,11 +429,7 @@ class Bot {
 			$roomID = $this->message['roomID'];
 		}
 		
-		$data = '';
-		if (file_exists(DIR.'say')) {
-			$data = file_get_contents(DIR.'say')."\n";
-		}
-		file_put_contents(DIR.'say', $data.$roomID.' '.$message);
+		fwrite($this->outgoingSocket, $roomID.' '.$message."\n");
 	}
 	
 	/**
