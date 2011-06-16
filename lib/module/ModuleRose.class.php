@@ -34,19 +34,19 @@ class ModuleRose extends Module {
 				}
 			}
 		}
-		if (substr($bot->message['text'], 0, 6) == '!roses') {
-			if ($bot->message['text'] == '!roses') {
+		if (substr($t = Module::removeWhisper($bot->message['text']), 0, 6) == '!roses') {
+			if ($t == '!roses') {
 				$userID = $bot->lookUpUserID();
 				$username = $bot->message['usernameraw'];
 			}
 			else {
-				$username = substr($bot->message['text'], 7);
+				$username = substr($t, 7);
 				$userID = $bot->lookUpUserID($username);
 			}
 			if (!isset($this->config->config[$userID])) {
 				$this->config->config[$userID] = array('got' => 0, 'has' => 3, 'lastjoin' => 0, 'joins' => 0);
 			}
-			$bot->queue('['.$username.'] hat bisher '.$this->config->config[$userID]['got']. ' Rosen erhalten und kann noch '.$this->config->config[$userID]['has'].' Stück verteilen.');
+			$bot->queue('/whisper "'.$bot->message['usernameraw'].'" ['.$username.'] hat bisher '.$this->config->config[$userID]['got']. ' Rosen erhalten und kann noch '.$this->config->config[$userID]['has'].' Stück verteilen.');
 		}
 		else if (substr($bot->message['text'], 0, 6) == '!rose ') {
 			$userID = $bot->lookUpUserID();
