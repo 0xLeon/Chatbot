@@ -110,6 +110,8 @@ class Bot {
 				if ($this->child !== 0) {
 					Core::log()->error = 'Received SIGTERM / SIGUSR1';
 					posix_kill($this->child, SIGTERM); 
+					sleep(2);
+					posix_kill($this->child, SIGKILL);
 				}
 				if ($signal === SIGTERM) exit;
 				else exit(2);
@@ -370,7 +372,7 @@ class Bot {
 		while (true) {
 			self::getConnection()->postMessage(fgets($this->incomingSocket, 1024));
 			
-			usleep(600000);
+#			usleep(600000);
 		}
 	}
 	
